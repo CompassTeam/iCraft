@@ -3,6 +3,7 @@ package iCraft.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import iCraft.core.utils.ICraftUtils;
 import net.minecraft.client.gui.GuiTextField;
 import org.lwjgl.input.Mouse;
 
@@ -61,41 +62,48 @@ public class GuiiCraftBlacklist extends GuiiCraftBase
 		return (int)((list.size() * scroll) - ((5 / (float)list.size())) * scroll);
 	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
-	{
-		super.drawScreen(mouseX, mouseY, partialTick);
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
+    {
+        super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
 
-		drawTexturedModalRect(guiWidth + 113, guiHeight + 67 + getScroll(), (canScroll ? 0 : 11), 180, 11, 15);
+        drawTexturedModalRect(guiWidth + 113, guiHeight + 67 + getScroll(), (canScroll ? 0 : 11), 180, 11, 15);
 
-		int xAxis = mouseX - guiWidth;
-		int yAxis = mouseY - guiHeight;
+        int xAxis = mouseX - guiWidth;
+        int yAxis = mouseY - guiHeight;
 
-		for (int i = 0; i < 5; i++)
-		{
-			if (getIndex() + i < list.size())
-			{
-				int yStart = i * 14 + 67;
-				boolean mouseOver = xAxis >= 52 && xAxis <= 111 && yAxis >= yStart && yAxis <= yStart + 14;
+        for (int i = 0; i < 5; i++)
+        {
+            if (getIndex() + i < list.size())
+            {
+                int yStart = i * 14 + 67;
+                boolean mouseOver = xAxis >= 52 && xAxis <= 111 && yAxis >= yStart && yAxis <= yStart + 14;
 
-				drawTexturedModalRect(guiWidth + 52, guiHeight + yStart, mouseOver ? 0 : 60, 166, 60, 14);
-			}
-		}
+                drawTexturedModalRect(guiWidth + 52, guiHeight + yStart, mouseOver ? 0 : 60, 166, 60, 14);
+            }
+        }
 
-		textField.drawTextBox();
+        textField.drawTextBox();
+    }
 
-		for (int i = 0; i < 5; i++)
-		{
-			if (getIndex() + i < list.size())
-			{
-				int yStart = i * 28 + 69;
+    @Override
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        fontRendererObj.drawString(ICraftUtils.localize("iCraft.gui.Blacklist"), 58, 40, 0xffffff);
 
-				drawString(list.get(getIndex() + i), 110, yStart + 73, 0xffffff, true, 0.5F);
-			}
-		}
-		//drawString("Blacklist", -58, 4, 0xffffff); TODO
-		drawTime();
-	}
+        for (int i = 0; i < 5; i++)
+        {
+            if (getIndex() + i < list.size())
+            {
+                int yStart = i * 28 + 69;
+
+                drawResizedString(list.get(getIndex() + i), 110, yStart + 73, 0xffffff, 0.5F);
+            }
+        }
+        drawTime();
+
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    }
 
 	@Override
 	protected void mouseClicked(int x, int y, int button)

@@ -7,24 +7,13 @@ import com.google.common.io.Files;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import iCraft.client.gui.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
-import iCraft.client.gui.GuiPizzaDelivery;
-import iCraft.client.gui.GuiiCraft;
-import iCraft.client.gui.GuiiCraftBlacklist;
-import iCraft.client.gui.GuiiCraftCalc;
-import iCraft.client.gui.GuiiCraftClock;
-import iCraft.client.gui.GuiiCraftDelivery;
-import iCraft.client.gui.GuiiCraftInCall;
-import iCraft.client.gui.GuiiCraftIncomingCall;
-import iCraft.client.gui.GuiiCraftMP3Player;
-import iCraft.client.gui.GuiiCraftNumPad;
-import iCraft.client.gui.GuiiCraftSettings;
-import iCraft.client.gui.GuiiCraftShopping;
 import iCraft.client.mp3.MP3Player;
 import iCraft.client.render.ItemRenderHandler;
 import iCraft.client.render.RenderFallingCase;
@@ -146,6 +135,8 @@ public class ClientProxy extends CommonProxy
 				return new GuiiCraftDelivery("GuiiCraftDelivery");
 			case 13:
 				return new GuiiCraftBlacklist("GuiiCraftClock");
+            case 14:
+                return new GuiiCraftContacts("GuiiCraftContacts");
 		}
 		return null;
 	}

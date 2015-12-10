@@ -1,10 +1,13 @@
 package iCraft.client.gui;
 
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import org.lwjgl.opengl.GL11;
 
 import iCraft.core.utils.ICraftClientUtils;
 import iCraft.core.utils.ICraftClientUtils.ResourceType;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.opengl.GL12;
 
 public class GuiiCraftBase extends GuiScreen
 {
@@ -29,33 +32,52 @@ public class GuiiCraftBase extends GuiScreen
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTick)
     {
-		mc.renderEngine.bindTexture(ICraftClientUtils.getResource(ResourceType.GUI, resource + ".png"));
-		drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
+        drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
+        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        RenderHelper.disableStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        super.drawScreen(mouseX, mouseY, partialTick);
+        RenderHelper.enableGUIStandardItemLighting();
+        GL11.glPushMatrix();
+        GL11.glTranslatef((float) guiWidth, (float) guiHeight, 0.0F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        short short1 = 240;
+        short short2 = 240;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) short1 / 1.0F, (float) short2 / 1.0F);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		super.drawScreen(mouseX, mouseY, partialTick);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        drawGuiContainerForegroundLayer(mouseX, mouseY);
+        GL11.glEnable(GL11.GL_LIGHTING);
+
+        GL11.glPopMatrix();
+
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderHelper.enableStandardItemLighting();
     }
 
-	protected void drawString(String toRender, int posX, int posY, int color)
-	{
-		drawString(toRender, posX, posY, color, false, 0);
-	}
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
+    {
+        mc.renderEngine.bindTexture(ICraftClientUtils.getResource(ResourceType.GUI, resource + ".png"));
+        drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
+    }
 
-	protected void drawString(String toRender, int posX, int posY, int color, boolean scale, float size)
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {}
+
+	protected void drawResizedString(String toRender, int posX, int posY, int color, float size)
 	{
 		GL11.glPushMatrix();
-		if (scale)
-			GL11.glScalef(size, size, size);
-
-        GL11.glTranslatef((float)guiWidth, (float)guiHeight, 0.0F);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        fontRendererObj.drawString(toRender, guiWidth + posX, guiHeight + posY, color);
-        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glScalef(size, size, size);
+        fontRendererObj.drawString(toRender, posX, posY, color);
 		GL11.glPopMatrix();
 	}
 
 	protected void drawTime()
 	{
-		drawString(ICraftClientUtils.getTime(), 164, 58, 0xffffff, true, 0.5F);
+        drawResizedString(ICraftClientUtils.getTime(), 164, 58, 0xffffff, 0.5F);
 	}
 
 	protected boolean isMouseOver(int startX, int startY, int width, int height, int mouseX, int mouseY)

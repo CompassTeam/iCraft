@@ -17,23 +17,24 @@ public class GuiiCraftInCall extends GuiiCraftBase
 		super(resource);
 	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
+    @Override
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-		super.drawScreen(mouseX, mouseY, partialTick);
+        if (isCalling())
+        {
+            if (ICraftClientUtils.getClientPlayer(mc.theWorld, true) != null)
+                GuiInventory.func_147046_a(88, 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, true));
+        }
+        else
+        {
+            if (ICraftClientUtils.getClientPlayer(mc.theWorld, false) != null)
+                GuiInventory.func_147046_a(88, 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, false));
+        }
 
-		if (isCalling())
-		{
-			if (ICraftClientUtils.getClientPlayer(mc.theWorld, true) != null)
-				GuiInventory.func_147046_a(guiWidth + 88, guiHeight + 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, true));
-		}
-		else
-		{
-			if (ICraftClientUtils.getClientPlayer(mc.theWorld, false) != null)
-			GuiInventory.func_147046_a(guiWidth + 88, guiHeight + 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, false));
-		}
-		drawString("Talking with " + (isCalling() ? ICraftClientUtils.getPlayerNumber(true) : ICraftClientUtils.getPlayerNumber(false)), 118, 218, 0xffffff, true, 0.5F);
-		drawTime();
+        drawResizedString("Talking with " + (isCalling() ? ICraftClientUtils.getPlayerNumber(true) : ICraftClientUtils.getPlayerNumber(false)), 118, 218, 0xffffff, 0.5F);
+        drawTime();
+
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
 	@Override

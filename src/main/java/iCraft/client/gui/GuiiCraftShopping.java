@@ -69,44 +69,51 @@ public class GuiiCraftShopping extends GuiiCraftBase
         return (ItemStack) col.toArray()[0];
     }
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
-	{
-		super.drawScreen(mouseX, mouseY, partialTick);
 
-		GL11.glPushMatrix();
-		RenderHelper.enableGUIStandardItemLighting();
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		GL11.glEnable(GL11.GL_LIGHTING);
-		itemRender.zLevel = 100.0F;
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTick)
+    {
+        super.drawScreen(mouseX, mouseY, partialTick);
+
+        GL11.glPushMatrix();
+        RenderHelper.enableGUIStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        itemRender.zLevel = 100.0F;
 
         ItemStack buyItem = new ItemStack(getBuyStack(ICraftUtils.items.get(i).keySet()).getItem(), getBuyStack(ICraftUtils.items.get(i).keySet()).stackSize * qnt, getBuyStack(ICraftUtils.items.get(i).keySet()).getItemDamage());
         ItemStack sellItem = new ItemStack(getSellStack(ICraftUtils.items.get(i).values()).getItem(), getSellStack(ICraftUtils.items.get(i).values()).stackSize * qnt, getSellStack(ICraftUtils.items.get(i).values()).getItemDamage());
 
-		itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), buyItem, guiWidth + 98, guiHeight + 51);
-		itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), buyItem, guiWidth + 98, guiHeight + 51);
+        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), buyItem, guiWidth + 98, guiHeight + 51);
+        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), buyItem, guiWidth + 98, guiHeight + 51);
         itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), sellItem, guiWidth + 48, guiHeight + 51);
         itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), sellItem, guiWidth + 48, guiHeight + 51);
 
-		itemRender.zLevel = 0.0F;
-		GL11.glDisable(GL11.GL_LIGHTING);
-		if (isMouseOver(98, 51, 16, 16, mouseX, mouseY))
-		{
+        itemRender.zLevel = 0.0F;
+        GL11.glDisable(GL11.GL_LIGHTING);
+        if (isMouseOver(98, 51, 16, 16, mouseX, mouseY))
+        {
             renderToolTip(getBuyStack(ICraftUtils.items.get(i).keySet()), mouseX, mouseY);
-		}
+        }
         if (isMouseOver(48, 51, 16, 16, mouseX, mouseY))
         {
             renderToolTip(getSellStack(ICraftUtils.items.get(i).values()), mouseX, mouseY);
         }
-		GL11.glPopMatrix();
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		RenderHelper.enableStandardItemLighting();
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderHelper.enableStandardItemLighting();
+    }
 
-		drawString(ICraftClientUtils.getTime(), 148, 45, 0xffffff, true, 0.5F);
-	}
+    @Override
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        drawResizedString(ICraftClientUtils.getTime(), 148, 45, 0xffffff, 0.5F);
+
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    }
 
 	@Override
 	protected void actionPerformed(GuiButton guiButton)

@@ -19,27 +19,33 @@ public class GuiiCraftIncomingCall extends GuiiCraftBase
 		super(resource);
 	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
     {
-		mc.renderEngine.bindTexture(ICraftClientUtils.getResource(ResourceType.GUI, (isCalling() ? "GuiiCraftInCall.png" : "GuiiCraftIncomingCall.png")));
-		guiWidth = (width - xSize) / 2;
-		guiHeight = (height - ySize) / 2;
-		drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
+        mc.renderEngine.bindTexture(ICraftClientUtils.getResource(ResourceType.GUI, (isCalling() ? "GuiiCraftInCall.png" : "GuiiCraftIncomingCall.png")));
+        guiWidth = (width - xSize) / 2;
+        guiHeight = (height - ySize) / 2;
+        drawTexturedModalRect(guiWidth, guiHeight, 0, 0, xSize, ySize);
+    }
 
-		if (isCalling())
-		{
-			if (ICraftClientUtils.getClientPlayer(mc.theWorld, true) != null)
-				GuiInventory.func_147046_a(guiWidth + 88, guiHeight + 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, true));
-			drawString("Calling to " + ICraftClientUtils.getPlayerNumber(true), 118, 218, 0xffffff, true, 0.5F);
-		}
-		else
-		{
-			if (ICraftClientUtils.getClientPlayer(mc.theWorld, false) != null)
-				GuiInventory.func_147046_a(guiWidth + 88, guiHeight + 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, false));
-			drawString(ICraftClientUtils.getPlayerNumber(false) + " is calling you", 118, 218, 0xffffff, true, 0.5F);
-		}
-		drawTime();
+    @Override
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        if (isCalling())
+        {
+            if (ICraftClientUtils.getClientPlayer(mc.theWorld, true) != null)
+                GuiInventory.func_147046_a(88, 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, true));
+            drawResizedString("Calling to " + ICraftClientUtils.getPlayerNumber(true), 118, 218, 0xffffff, 0.5F);
+        }
+        else
+        {
+            if (ICraftClientUtils.getClientPlayer(mc.theWorld, false) != null)
+                GuiInventory.func_147046_a(88, 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, false));
+            drawResizedString(ICraftClientUtils.getPlayerNumber(false) + " is calling you", 118, 218, 0xffffff, 0.5F);
+        }
+        drawTime();
+
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
 	@Override

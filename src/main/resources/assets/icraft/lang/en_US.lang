@@ -13,6 +13,11 @@ item.pizza.name=Pizza
 tooltip.number=Number
 //KeyBind
 key.mute=Mute iCraft
+//GUI
+iCraft.gui.Settings=Settings
+iCraft.gui.Blacklist=Blacklist
+iCraft.gui.Contacts=Contacts
+iCraft.gui.contactListMode=Click here to change the Contact List mode between Call and Edit.
 //Update
 update.outdated=Your iCraft is outdated, consider updating to
 //MSG

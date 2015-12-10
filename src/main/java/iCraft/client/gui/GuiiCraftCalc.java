@@ -21,13 +21,13 @@ public class GuiiCraftCalc extends GuiiCraftBase
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
-    {
-		super.drawScreen(mouseX, mouseY, partialTick);
+	public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	{
+        drawResizedString((getExResult().endsWith(".0") ? getExResult().substring(0, getExResult().indexOf(".")) : getExResult()), 146, 78, 0x404040, 0.5F);
+        drawTime();
 
-		drawString((getExResult().endsWith(".0") ? getExResult().substring(0, getExResult().indexOf(".")) : getExResult()), 146, 78, 0x404040, true, 0.5F);
-		drawTime();
-    }
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+	}
 
 	public String getResult()
 	{

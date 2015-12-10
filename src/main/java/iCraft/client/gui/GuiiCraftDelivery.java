@@ -68,45 +68,48 @@ public class GuiiCraftDelivery extends GuiiCraftBase
 		}
 	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
-	{
-		super.drawScreen(mouseX, mouseY, partialTick);
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTick)
+    {
+        super.drawScreen(mouseX, mouseY, partialTick);
 
-		GL11.glPushMatrix();
-		RenderHelper.enableGUIStandardItemLighting();
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-		GL11.glEnable(GL11.GL_LIGHTING);
-		itemRender.zLevel = 100.0F;
+        GL11.glPushMatrix();
+        RenderHelper.enableGUIStandardItemLighting();
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        itemRender.zLevel = 100.0F;
 
-		ItemStack iron = new ItemStack(Items.iron_ingot, (qnt * 2));
-		ItemStack pizza = new ItemStack(ICraft.pizza, qnt);
+        ItemStack iron = new ItemStack(Items.iron_ingot, (qnt * 2));
+        ItemStack pizza = new ItemStack(ICraft.pizza, qnt);
 
-		itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), iron, guiWidth + 53, guiHeight + 45);
-		itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), iron, guiWidth + 53, guiHeight + 45);
+        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), iron, guiWidth + 53, guiHeight + 45);
+        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), iron, guiWidth + 53, guiHeight + 45);
 
-		itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), pizza, guiWidth + 107, guiHeight + 45);
-		itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), pizza, guiWidth + 107, guiHeight + 45);
+        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), pizza, guiWidth + 107, guiHeight + 45);
+        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), pizza, guiWidth + 107, guiHeight + 45);
 
-		itemRender.zLevel = 0.0F;
-		GL11.glDisable(GL11.GL_LIGHTING);
-		if (isMouseOver(53, 45, 16, 16, mouseX, mouseY))
-		{
-			renderToolTip(iron, mouseX, mouseY);
-		}
-		else if (isMouseOver(107, 45, 16, 16, mouseX, mouseY))
-		{
-			renderToolTip(pizza, mouseX, mouseY);
-		}
-		GL11.glPopMatrix();
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		RenderHelper.enableStandardItemLighting();
+        itemRender.zLevel = 0.0F;
+        GL11.glDisable(GL11.GL_LIGHTING);
+        if (isMouseOver(53, 45, 16, 16, mouseX, mouseY))
+            renderToolTip(iron, mouseX, mouseY);
+        else if (isMouseOver(107, 45, 16, 16, mouseX, mouseY))
+            renderToolTip(pizza, mouseX, mouseY);
 
-		drawTime();
-	}
+        GL11.glPopMatrix();
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        RenderHelper.enableStandardItemLighting();
+    }
+
+    @Override
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        drawTime();
+
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    }
 
 	@Override
 	protected void mouseClicked(int x, int y, int button)

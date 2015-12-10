@@ -63,72 +63,81 @@ public class GuiiCraftMP3Player extends GuiiCraftBase
 		return (int)((ICraft.musics.size() * scroll) - ((5 / (float)ICraft.musics.size())) * scroll);
 	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
     {
-		super.drawScreen(mouseX, mouseY, partialTick);
+        super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
 
-		drawTexturedModalRect(guiWidth + 113, guiHeight + 50 + getScroll(), (canScroll ? 0 : 11), 180, 11, 15);
+        drawTexturedModalRect(guiWidth + 113, guiHeight + 50 + getScroll(), (canScroll ? 0 : 11), 180, 11, 15);
 
-		int xAxis = mouseX - guiWidth;
-		int yAxis = mouseY - guiHeight;
+        int xAxis = mouseX - guiWidth;
+        int yAxis = mouseY - guiHeight;
 
-		for (int i = 0; i < 5; i++)
-		{
-			if (getIndex() + i < ICraft.musics.size())
-			{
-				int yStart = i * 14 + 50;
-				int rnd1 = rnd.nextInt(8), rnd2 = rnd.nextInt(8), rnd3 = rnd.nextInt(8);
-				boolean mouseOver = xAxis >= 52 && xAxis <= 111 && yAxis >= yStart && yAxis <= yStart + 14;
+        for (int i = 0; i < 5; i++)
+        {
+            if (getIndex() + i < ICraft.musics.size())
+            {
+                int yStart = i * 14 + 50;
+                int rnd1 = rnd.nextInt(8), rnd2 = rnd.nextInt(8), rnd3 = rnd.nextInt(8);
+                boolean mouseOver = xAxis >= 52 && xAxis <= 111 && yAxis >= yStart && yAxis <= yStart + 14;
 
-				drawTexturedModalRect(guiWidth + 52, guiHeight + yStart, mouseOver ? 0 : 60, 166, 60, 14);
+                drawTexturedModalRect(guiWidth + 52, guiHeight + yStart, mouseOver ? 0 : 60, 166, 60, 14);
 
-				if (ICraft.mp3Player != null && ICraft.mp3Player.hasPlayer() && ICraft.mp3Player.getPlayerStatus() != 0 && ICraft.mp3Player.getPlayerStatus() != 3 && ICraft.musics.get(getIndex() + i) == ICraft.musics.get(ICraft.currentMusicId))
-				{
-					drawTexturedModalRect(guiWidth + 101, guiHeight + yStart + 12 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd1 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 5 : 0)), 22, 188 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd1 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 5 : 0)), 2, (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd1 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 5 : 0)));
-					drawTexturedModalRect(guiWidth + 104, guiHeight + yStart + 12 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd2 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 8 : 0)), 22, 188 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd2 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 8 : 0)), 2, (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd2 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 8 : 0)));
-					drawTexturedModalRect(guiWidth + 107, guiHeight + yStart + 12 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd3 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 2 : 0)), 22, 188 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd3 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 2 : 0)), 2, (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd3 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 2 : 0)));
-				}
-			}
-		}
+                if (ICraft.mp3Player != null && ICraft.mp3Player.hasPlayer() && ICraft.mp3Player.getPlayerStatus() != 0 && ICraft.mp3Player.getPlayerStatus() != 3 && ICraft.musics.get(getIndex() + i) == ICraft.musics.get(ICraft.currentMusicId))
+                {
+                    drawTexturedModalRect(guiWidth + 101, guiHeight + yStart + 12 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd1 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 5 : 0)), 22, 188 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd1 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 5 : 0)), 2, (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd1 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 5 : 0)));
+                    drawTexturedModalRect(guiWidth + 104, guiHeight + yStart + 12 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd2 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 8 : 0)), 22, 188 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd2 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 8 : 0)), 2, (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd2 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 8 : 0)));
+                    drawTexturedModalRect(guiWidth + 107, guiHeight + yStart + 12 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd3 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 2 : 0)), 22, 188 - (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd3 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 2 : 0)), 2, (ICraft.mp3Player.getPlayerStatus() == 1 ? rnd3 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 2 : 0)));
+                }
 
-		if (ICraft.mp3Player != null && ICraft.mp3Player.hasPlayer())
-		{
-			drawTexturedModalRect(guiWidth + 51, guiHeight + 121, 182, (ICraft.mp3Player.getPlayerStatus() == 1 ? 58 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 41 : (ICraft.mp3Player.getPlayerStatus() == 3 ? 41 : 0))), 74, 17);
-			drawTexturedModalRect(guiWidth + 51, guiHeight + 34, 182, 91, 74, 15);
-			drawTexturedModalRect(guiWidth + 53, guiHeight + 41, 184, (ICraft.mp3Player.getRepeatType() == 0 ? 107 : (ICraft.mp3Player.getRepeatType() == 1 ? 116 : (ICraft.mp3Player.getRepeatType() == 2 ? 125 : 0))), 7, 7);
+                if (isMouseOver(52, (i * 14 + 50), 60, 14, mouseX, mouseY))
+                {
+                    List<String> tooltip = new ArrayList<String>();
+                    tooltip.add(ICraft.musicNames.get(getIndex() + i));
+                    tooltip.add(ICraftClientUtils.getAuthor(ICraft.musics.get(getIndex() + i)));
 
-			displayInt = ICraft.mp3Player.getMusicStatus(68);
-			drawTexturedModalRect(guiWidth + 54, guiHeight + 37, 185, 89, displayInt, 2);
-		}
-		if (ICraft.mp3Player != null && ICraft.mp3Player.hasPlayer())
-			drawString(ICraft.mp3Player.getPosition() + "/" + ICraft.mp3Player.getMinDuration(), 186, 84, 0xffffff, true, 0.5F);
-		for (int i = 0; i < 5; i++)
-		{
-			if (getIndex() + i < ICraft.musics.size())
-			{
-				int yStart = i * 28 + 49;
+                    drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
+                }
+            }
+        }
 
-				drawString((ICraft.musicNames.get(getIndex() + i).length() > 13 ? ICraft.musicNames.get(getIndex() + i).substring(0, 13) : ICraft.musicNames.get(getIndex() + i)), 110, yStart + 56, 0xffffff, true, 0.5F);
-				drawString(ICraftClientUtils.getAuthor(ICraft.musics.get(getIndex() + i)), 110, yStart + 66, 0xffffff, true, 0.5F);
+        if (ICraft.mp3Player != null && ICraft.mp3Player.hasPlayer())
+        {
+            drawTexturedModalRect(guiWidth + 51, guiHeight + 121, 182, (ICraft.mp3Player.getPlayerStatus() == 1 ? 58 : (ICraft.mp3Player.getPlayerStatus() == 2 ? 41 : (ICraft.mp3Player.getPlayerStatus() == 3 ? 41 : 0))), 74, 17);
+            drawTexturedModalRect(guiWidth + 51, guiHeight + 34, 182, 91, 74, 15);
+            drawTexturedModalRect(guiWidth + 53, guiHeight + 41, 184, (ICraft.mp3Player.getRepeatType() == 0 ? 107 : (ICraft.mp3Player.getRepeatType() == 1 ? 116 : (ICraft.mp3Player.getRepeatType() == 2 ? 125 : 0))), 7, 7);
 
-				if (isMouseOver(52, (i * 14 + 50), 60, 14, mouseX, mouseY))
-				{
-					List<String> tooltip = new ArrayList<String>();
-					tooltip.add(ICraft.musicNames.get(getIndex() + i));
-					tooltip.add(ICraftClientUtils.getAuthor(ICraft.musics.get(getIndex() + i)));
+            displayInt = ICraft.mp3Player.getMusicStatus(68);
+            drawTexturedModalRect(guiWidth + 54, guiHeight + 37, 185, 89, displayInt, 2);
+        }
 
-					drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
-				}
-			}
-		}
-		if (isMouseOver(63, 41, 5, 7, mouseX, mouseY))
-		{
-			List<String> tooltip = new ArrayList<String>();
-			tooltip.add(ICraftUtils.localize("mp3.reload"));
-			drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
-		}
-		drawTime();
+        if (isMouseOver(63, 41, 5, 7, mouseX, mouseY))
+        {
+            List<String> tooltip = new ArrayList<String>();
+            tooltip.add(ICraftUtils.localize("mp3.reload"));
+            drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
+        }
+    }
+
+    @Override
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+    {
+        if (ICraft.mp3Player != null && ICraft.mp3Player.hasPlayer())
+            drawResizedString(ICraft.mp3Player.getPosition() + "/" + ICraft.mp3Player.getMinDuration(), 186, 84, 0xffffff, 0.5F);
+        for (int i = 0; i < 5; i++)
+        {
+            if (getIndex() + i < ICraft.musics.size())
+            {
+                int yStart = i * 28 + 49;
+
+                drawResizedString((ICraft.musicNames.get(getIndex() + i).length() > 13 ? ICraft.musicNames.get(getIndex() + i).substring(0, 13) : ICraft.musicNames.get(getIndex() + i)), 110, yStart + 56, 0xffffff, 0.5F);
+                drawResizedString(ICraftClientUtils.getAuthor(ICraft.musics.get(getIndex() + i)), 110, yStart + 66, 0xffffff, 0.5F);
+            }
+        }
+
+        drawTime();
+
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
 	@Override

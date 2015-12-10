@@ -91,7 +91,7 @@ public class MessageBlacklist extends MessageBase<MessageBlacklist>
 		nbtTags.setTag("blacklist", tagList);
 	}
 
-	// Really dislikes this class, but it works, however, if you have a better idea please tell me :)
+	// Really dislikes this method, but it works, however, if you have a better idea please tell me :)
 	private void removeNBT(NBTTagCompound nbtTags, String toRemove)
 	{
 		List<String> list = readNBT(nbtTags);

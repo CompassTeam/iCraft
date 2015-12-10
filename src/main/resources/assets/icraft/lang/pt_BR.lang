@@ -13,6 +13,11 @@ item.pizza.name=Pizza
 tooltip.number=Número
 //KeyBind
 key.mute=Mutar iCraft
+//GUI
+iCraft.gui.Settings=Configurações
+iCraft.gui.Blacklist=Lista negra
+iCraft.gui.Contacts=Contatos
+iCraft.gui.contactListMode=Clique aqui para alternar os modos da agenda entre Ligar e Editar.
 //Update
 update.outdated=Seu iCraft está desatualizado, considere atualizar para a
 //MSG

@@ -31,6 +31,7 @@ public class GuiPizzaDelivery extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		fontRendererObj.drawString(ICraftUtils.localize("container.inventory"), 8, ySize - 96 + 3, 0x404040);
+
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 	}
 

@@ -17,13 +17,13 @@ public class GuiiCraftNumPad extends GuiiCraftBase
 		super(resource);
 	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
+    @Override
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-		super.drawScreen(mouseX, mouseY, partialTick);
+        drawResizedString(callNumber, 154, 74, 0x404040, 0.5F);
+        drawTime();
 
-		drawString(callNumber, 154, 74, 0x404040, true, 0.5F);
-		drawTime();
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
 	@Override

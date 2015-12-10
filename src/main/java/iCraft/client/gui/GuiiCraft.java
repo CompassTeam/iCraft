@@ -17,33 +17,39 @@ public class GuiiCraft extends GuiiCraftBase
 	}
 
 	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTick)
+	protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
+	{
+        super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
+
+        int xAxis = mouseX - guiWidth;
+        int yAxis = mouseY - guiHeight;
+
+        if (xAxis >= 51 && xAxis <= 67 && yAxis >= 38 && yAxis <= 54)
+            drawTexturedModalRect(guiWidth + 51, guiHeight + 38, 176, 38, 17, 17);
+        if (xAxis >= 70 && xAxis <= 86 && yAxis >= 38 && yAxis <= 54)
+            drawTexturedModalRect(guiWidth + 70, guiHeight + 38, 176, 55, 17, 17);
+        if (xAxis >= 89 && xAxis <= 105 && yAxis >= 38 && yAxis <= 54)
+            drawTexturedModalRect(guiWidth + 89, guiHeight + 38, 176, 72, 17, 17);
+        if (xAxis >= 108 && xAxis <= 124 && yAxis >= 38 && yAxis <= 54)
+            drawTexturedModalRect(guiWidth + 108, guiHeight + 38, 176, 89, 17, 17);
+        if (xAxis >= 51 && xAxis <= 67 && yAxis >= 58 && yAxis <= 74)
+            drawTexturedModalRect(guiWidth + 51, guiHeight + 58, 193, 38, 17, 17);
+        if (xAxis >= 70 && xAxis <= 86 && yAxis >= 58 && yAxis <= 74)
+            drawTexturedModalRect(guiWidth + 70, guiHeight + 58, 193, 55, 17, 17);
+        if (xAxis >= 89 && xAxis <= 105 && yAxis >= 58 && yAxis <= 74)
+            drawTexturedModalRect(guiWidth + 89, guiHeight + 58, 193, 72, 17, 17);
+        if (xAxis >= 108 && xAxis <= 124 && yAxis >= 58 && yAxis <= 74)
+            drawTexturedModalRect(guiWidth + 108, guiHeight + 58, 193, 89, 17, 17);
+        if (xAxis >= 51 && xAxis <= 67 && yAxis >= 78 && yAxis <= 94)
+            drawTexturedModalRect(guiWidth + 51, guiHeight + 78, 210, 38, 17, 17);
+    }
+
+    @Override
+    public void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-		super.drawScreen(mouseX, mouseY, partialTick);
+        drawTime();
 
-		int xAxis = mouseX - guiWidth;
-		int yAxis = mouseY - guiHeight;
-
-		if (xAxis >= 51 && xAxis <= 67 && yAxis >= 38 && yAxis <= 54)
-			drawTexturedModalRect(guiWidth + 51, guiHeight + 38, 176, 38, 17, 17);
-		if (xAxis >= 70 && xAxis <= 86 && yAxis >= 38 && yAxis <= 54)
-			drawTexturedModalRect(guiWidth + 70, guiHeight + 38, 176, 55, 17, 17);
-		if (xAxis >= 89 && xAxis <= 105 && yAxis >= 38 && yAxis <= 54)
-			drawTexturedModalRect(guiWidth + 89, guiHeight + 38, 176, 72, 17, 17);
-		if (xAxis >= 108 && xAxis <= 124 && yAxis >= 38 && yAxis <= 54)
-			drawTexturedModalRect(guiWidth + 108, guiHeight + 38, 176, 89, 17, 17);
-		if (xAxis >= 51 && xAxis <= 67 && yAxis >= 58 && yAxis <= 74)
-			drawTexturedModalRect(guiWidth + 51, guiHeight + 58, 193, 38, 17, 17);
-		if (xAxis >= 70 && xAxis <= 86 && yAxis >= 58 && yAxis <= 74)
-			drawTexturedModalRect(guiWidth + 70, guiHeight + 58, 193, 55, 17, 17);
-		if (xAxis >= 89 && xAxis <= 105 && yAxis >= 58 && yAxis <= 74)
-			drawTexturedModalRect(guiWidth + 89, guiHeight + 58, 193, 72, 17, 17);
-		if (xAxis >= 108 && xAxis <= 124 && yAxis >= 58 && yAxis <= 74)
-			drawTexturedModalRect(guiWidth + 108, guiHeight + 58, 193, 89, 17, 17);
-		if (xAxis >= 51 && xAxis <= 67 && yAxis >= 78 && yAxis <= 94)
-			drawTexturedModalRect(guiWidth + 51, guiHeight + 78, 210, 38, 17, 17);
-
-		drawTime();
+        super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
 	@Override

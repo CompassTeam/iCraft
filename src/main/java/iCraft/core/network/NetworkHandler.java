@@ -24,6 +24,7 @@ public class NetworkHandler
 		INSTANCE.registerMessage(MessageClosePlayer.class, MessageClosePlayer.class, 4, Side.CLIENT);
 		INSTANCE.registerMessage(MessageDelivery.class, MessageDelivery.class, 5, Side.SERVER);
 		INSTANCE.registerMessage(MessageBlacklist.class, MessageBlacklist.class, 6, Side.SERVER);
+		INSTANCE.registerMessage(MessageContacts.class, MessageContacts.class, 7, Side.SERVER);
 	}
 
 	public static void sendToServer(IMessage message)
