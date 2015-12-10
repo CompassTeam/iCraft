@@ -1,0 +1,83 @@
+buildscript
+{
+    repositories
+	{
+        mavenCentral()
+        maven
+		{
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven
+		{
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies
+	{
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+apply plugin: 'idea'
+
+idea
+{
+    module
+	{
+        inheritOutputDirs = true
+    }
+}
+
+apply plugin: 'forge'
+
+version = "0.7"
+group= "harley.harleyMod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "iCraft"
+
+minecraft
+{
+    version = "1.7.10-10.13.2.1291"
+	replace "@VERSION@", project.version
+    runDir = "eclipse"
+}
+
+dependencies
+{
+	compile 'com.googlecode.soundlibs:jlayer:1.0.1-1'
+	compile 'com.googlecode.soundlibs:mp3spi:1.9.5-1'
+	compile 'com.googlecode.soundlibs:tritonus-share:0.3.7-1'
+}
+
+processResources
+{
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs)
+	{
+        include 'mcmod.info'
+
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs)
+	{
+        exclude 'mcmod.info'
+    }
+}
+
+jar
+{
+	manifest
+	{
+		attributes 'FMLCorePlugin': 'iCraft.core.coremod.ICraftCoreMod'
+		attributes 'FMLCorePluginContainsFMLMod': 'true'
+	}
+
+	from("$projectDir")
+	{
+      include 'lib/**'
+   }
+}

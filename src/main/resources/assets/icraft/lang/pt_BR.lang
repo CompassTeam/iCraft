@@ -1,0 +1,25 @@
+﻿#========#
+# iCraft #
+#========#
+
+//Configuration GUI
+iCraft.configgui.title=Configuração iCraft
+//Blocks
+tile.CaseBlock.name=Caixote
+//Items
+item.iCraft.name=iCraft
+item.pizza.name=Pizza
+//Tooltip
+tooltip.number=Número
+//KeyBind
+key.mute=Mutar iCraft
+//Update
+update.outdated=Seu iCraft está desatualizado, considere atualizar para a
+//MSG
+msg.iCraft.iBay=Olhe para os céus...sua compra está chegando
+msg.iCraft.delivery=Basta esperar, sua pizza está chegando
+msg.delivery=Entregador de Pizza
+msg.delivery.rage=Então você não vai pagar?!
+msg.delivery.allOk=Obrigado...tchau tchau
+//Misc
+mp3.reload=Atualizar galeria
