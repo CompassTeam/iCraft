@@ -1,23 +1,22 @@
 package iCraft.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.network.MessageReceivedCall;
 import iCraft.core.network.NetworkHandler;
 import iCraft.core.utils.ICraftClientUtils;
 import iCraft.core.utils.ICraftClientUtils.ResourceType;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemStack;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraftIncomingCall extends GuiiCraftBase
 {
-	public GuiiCraftIncomingCall(String resource)
-	{
-		super(resource);
-	}
+    public GuiiCraftIncomingCall(String resource)
+    {
+        super(resource);
+    }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
@@ -48,58 +47,57 @@ public class GuiiCraftIncomingCall extends GuiiCraftBase
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
-	@Override
-	protected void mouseClicked(int x, int y, int button)
-	{
-		super.mouseClicked(x, y, button);
+    @Override
+    protected void mouseClicked(int x, int y, int button)
+    {
+        super.mouseClicked(x, y, button);
 
-		if (button == 0)
-		{
-			int xAxis = x - guiWidth;
-			int yAxis = y - guiHeight;
-			if (isCalling())
-			{
-				// Cancel
-				if(xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
-				{
-					mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-					NetworkHandler.sendToServer(new MessageReceivedCall(0, true));
-				}
-				//Cancel
-				if(xAxis >= 72 && xAxis <= 103 && yAxis >= 117 && yAxis <= 127)
-				{
-					mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-					NetworkHandler.sendToServer(new MessageReceivedCall(0, true));
-				}
-			}
-			else
-			{
-				// Exit
-				if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
-				{
-					mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-					NetworkHandler.sendToServer(new MessageReceivedCall(0, false));
-				}
-				// Accept
-				if (xAxis >= 53 && xAxis <= 84 && yAxis >= 121 && yAxis <= 131)
-				{
-					mc.thePlayer.openGui(ICraft.instance, 7, mc.theWorld, 0, 0, 0);
-					NetworkHandler.sendToServer(new MessageReceivedCall(7, false));
-				}
-				// Deny
-				if (xAxis >= 90 && xAxis <= 122 && yAxis >= 121 && yAxis <= 131)
-				{
-					mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-					NetworkHandler.sendToServer(new MessageReceivedCall(0, false));
-				}
-			}
-		}
-	}
+        if (button == 0)
+        {
+            int xAxis = x - guiWidth;
+            int yAxis = y - guiHeight;
+            if (isCalling()) {
+                // Cancel
+                if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
+                {
+                    mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
+                    NetworkHandler.sendToServer(new MessageReceivedCall(0, true));
+                }
+                //Cancel
+                if (xAxis >= 72 && xAxis <= 103 && yAxis >= 117 && yAxis <= 127)
+                {
+                    mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
+                    NetworkHandler.sendToServer(new MessageReceivedCall(0, true));
+                }
+            }
+            else
+            {
+                // Exit
+                if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
+                {
+                    mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
+                    NetworkHandler.sendToServer(new MessageReceivedCall(0, false));
+                }
+                // Accept
+                if (xAxis >= 53 && xAxis <= 84 && yAxis >= 121 && yAxis <= 131)
+                {
+                    mc.thePlayer.openGui(ICraft.instance, 7, mc.theWorld, 0, 0, 0);
+                    NetworkHandler.sendToServer(new MessageReceivedCall(7, false));
+                }
+                // Deny
+                if (xAxis >= 90 && xAxis <= 122 && yAxis >= 121 && yAxis <= 131)
+                {
+                    mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
+                    NetworkHandler.sendToServer(new MessageReceivedCall(0, false));
+                }
+            }
+        }
+    }
 
-	private boolean isCalling()
-	{
-		ItemStack itemStack = mc.thePlayer.getCurrentEquippedItem();
+    private boolean isCalling()
+    {
+        ItemStack itemStack = mc.thePlayer.getCurrentEquippedItem();
 
-		return (itemStack != null && itemStack.stackTagCompound != null && itemStack.stackTagCompound.hasKey("isCalling") && itemStack.stackTagCompound.getBoolean("isCalling"));
-	}
+        return (itemStack != null && itemStack.stackTagCompound != null && itemStack.stackTagCompound.hasKey("isCalling") && itemStack.stackTagCompound.getBoolean("isCalling"));
+    }
 }

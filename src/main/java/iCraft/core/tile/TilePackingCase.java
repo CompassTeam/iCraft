@@ -10,15 +10,15 @@ import net.minecraft.network.play.server.S2FPacketSetSlot;
 public class TilePackingCase extends TileInventory
 {
     private GameProfile profile;
-	private ItemStack itemStack;
+    private ItemStack itemStack;
 
-	public TilePackingCase(GameProfile profile, ItemStack itemStack)
-	{
-		super("PackingCase");
-		inventory = new ItemStack[1];
+    public TilePackingCase(GameProfile profile, ItemStack itemStack)
+    {
+        super("PackingCase");
+        inventory = new ItemStack[1];
         this.profile = profile;
-		this.itemStack = itemStack;
-	}
+        this.itemStack = itemStack;
+    }
 
     public boolean canOpen(EntityPlayer player)
     {
@@ -48,22 +48,22 @@ public class TilePackingCase extends TileInventory
         return false;
     }
 
-	@Override
-	public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
-	{
-		return false;
-	}
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
+    {
+        return false;
+    }
 
-	@Override
-	public void invalidate()
-	{
-		super.invalidate();
-		updateContainingBlockInfo();
-	}
+    @Override
+    public void invalidate()
+    {
+        super.invalidate();
+        updateContainingBlockInfo();
+    }
 
-	@Override
-	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
-	{
-		return false;
-	}
+    @Override
+    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    {
+        return false;
+    }
 }

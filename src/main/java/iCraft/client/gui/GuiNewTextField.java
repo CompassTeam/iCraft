@@ -12,56 +12,56 @@ import java.lang.reflect.Method;
 @SideOnly(Side.CLIENT)
 public class GuiNewTextField extends GuiTextField
 {
-	private final FontRenderer fontRendererObj;
-	private String text;
-	private int cursorCounter;
-	private boolean isEnabled;
-	private int lineScrollOffset;
-	private int enabledColor;
-	private int disabledColor;
+    private final FontRenderer fontRendererObj;
+    private String text;
+    private int cursorCounter;
+    private boolean isEnabled;
+    private int lineScrollOffset;
+    private int enabledColor;
+    private int disabledColor;
 
-	public GuiNewTextField(FontRenderer fontRenderer, int startX, int startY, int sizeX, int sizeY)
-	{
-		super(fontRenderer, startX, startY, sizeX, sizeY);
-		fontRendererObj = fontRenderer;
-	}
-
-	private void initializeVars()
-	{
-		Class textField = getClass().getSuperclass();
-		try {
-			text = getText();
-
-			Field cursorC = GuiTextField.class.getDeclaredField("cursorCounter");
-			cursorC.setAccessible(true);
-			cursorCounter = (Integer) cursorC.get(textField);
-
-			Field isE = GuiTextField.class.getDeclaredField("isEnabled");
-			isE.setAccessible(true);
-			isEnabled = (Boolean)isE.get(textField);
-
-			Field lineScroll = GuiTextField.class.getDeclaredField("lineScrollOffset");
-			lineScroll.setAccessible(true);
-			lineScrollOffset = (Integer) lineScroll.get(textField);
-
-			Field enabledCl = GuiTextField.class.getDeclaredField("enabledColor");
-			enabledCl.setAccessible(true);
-			enabledColor = (Integer) enabledCl.get(textField);
-
-			Field disabledCl = GuiTextField.class.getDeclaredField("disabledColor");
-			disabledCl.setAccessible(true);
-			disabledColor = (Integer) disabledCl.get(textField);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void drawTextBox()
+    public GuiNewTextField(FontRenderer fontRenderer, int startX, int startY, int sizeX, int sizeY)
     {
-		initializeVars();
+        super(fontRenderer, startX, startY, sizeX, sizeY);
+        fontRendererObj = fontRenderer;
+    }
 
-		if (getVisible())
+    private void initializeVars()
+    {
+        Class textField = getClass().getSuperclass();
+        try {
+            text = getText();
+
+            Field cursorC = GuiTextField.class.getDeclaredField("cursorCounter");
+            cursorC.setAccessible(true);
+            cursorCounter = (Integer) cursorC.get(textField);
+
+            Field isE = GuiTextField.class.getDeclaredField("isEnabled");
+            isE.setAccessible(true);
+            isEnabled = (Boolean) isE.get(textField);
+
+            Field lineScroll = GuiTextField.class.getDeclaredField("lineScrollOffset");
+            lineScroll.setAccessible(true);
+            lineScrollOffset = (Integer) lineScroll.get(textField);
+
+            Field enabledCl = GuiTextField.class.getDeclaredField("enabledColor");
+            enabledCl.setAccessible(true);
+            enabledColor = (Integer) enabledCl.get(textField);
+
+            Field disabledCl = GuiTextField.class.getDeclaredField("disabledColor");
+            disabledCl.setAccessible(true);
+            disabledColor = (Integer) disabledCl.get(textField);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void drawTextBox()
+    {
+        initializeVars();
+
+        if (getVisible())
         {
             if (getEnableBackgroundDrawing())
             {
@@ -80,9 +80,7 @@ public class GuiNewTextField extends GuiTextField
             int j1 = l;
 
             if (k > s.length())
-            {
                 k = s.length();
-            }
 
             if (s.length() > 0)
             {
@@ -94,9 +92,7 @@ public class GuiNewTextField extends GuiTextField
             int k1 = j1;
 
             if (!flag)
-            {
                 k1 = j > 0 ? l + width : l;
-            }
             else if (flag2)
             {
                 k1 = j1 - 1;
@@ -104,20 +100,14 @@ public class GuiNewTextField extends GuiTextField
             }
 
             if (s.length() > 0 && flag && j < s.length())
-            {
-            	fontRendererObj.drawString(s.substring(j), j1, i1, i);
-            }
+                fontRendererObj.drawString(s.substring(j), j1, i1, i);
 
             if (flag1)
             {
                 if (flag2)
-                {
                     Gui.drawRect(k1, i1 - 1, k1 + 1, i1 + 1 + fontRendererObj.FONT_HEIGHT, -3092272);
-                }
                 else
-                {
-                	fontRendererObj.drawString("_", k1, i1, i);
-                }
+                    fontRendererObj.drawString("_", k1, i1, i);
             }
 
             if (k != j)
@@ -125,12 +115,12 @@ public class GuiNewTextField extends GuiTextField
                 int l1 = l + fontRendererObj.getStringWidth(s.substring(0, k));
                 Class textField = getClass().getSuperclass();
                 try {
-					Method drawCursor = GuiTextField.class.getDeclaredMethod("drawCursorVertical", Integer.class, Integer.class, Integer.class, Integer.class);
-					drawCursor.setAccessible(true);
-					drawCursor.invoke(textField, k1, i1 - 1, l1 - 1, i1 + 1 + fontRendererObj.FONT_HEIGHT);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+                    Method drawCursor = GuiTextField.class.getDeclaredMethod("drawCursorVertical", Integer.class, Integer.class, Integer.class, Integer.class);
+                    drawCursor.setAccessible(true);
+                    drawCursor.invoke(textField, k1, i1 - 1, l1 - 1, i1 + 1 + fontRendererObj.FONT_HEIGHT);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

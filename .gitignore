@@ -4,6 +4,10 @@
 /classes
 /eclipse
 /gradle
+/lib
 /gradlew
 /*.bat
 /*.iml
+/*ipr
+/*iws
+/*sh

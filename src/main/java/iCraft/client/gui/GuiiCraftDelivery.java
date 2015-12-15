@@ -1,9 +1,7 @@
 package iCraft.client.gui;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.network.MessageDelivery;
 import iCraft.core.network.NetworkHandler;
@@ -14,59 +12,60 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraftDelivery extends GuiiCraftBase
 {
-	private int qnt = 1;
-	private GuiButton qntMore;
-	private GuiButton qntLess;
-	private GuiButton buy;
+    private int qnt = 1;
+    private GuiButton qntMore;
+    private GuiButton qntLess;
+    private GuiButton buy;
 
-	public GuiiCraftDelivery(String resource)
-	{
-		super(resource);
-	}
+    public GuiiCraftDelivery(String resource)
+    {
+        super(resource);
+    }
 
-	@Override
-	public void initGui()
-	{
-		super.initGui();
-		Keyboard.enableRepeatEvents(false);
-		buttonList.clear();
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        Keyboard.enableRepeatEvents(false);
+        buttonList.clear();
 
-		qntMore = new GuiButton(0, guiWidth + 60, guiHeight + 80, 15, 20, "\u25B2");
-		qntLess = new GuiButton(1, guiWidth + 60, guiHeight + 100, 15, 20, "\u25BC");
-		buy = new GuiButton(2, guiWidth + 85, guiHeight + 90, 30, 20, "Buy");
+        qntMore = new GuiButton(0, guiWidth + 60, guiHeight + 80, 15, 20, "\u25B2");
+        qntLess = new GuiButton(1, guiWidth + 60, guiHeight + 100, 15, 20, "\u25BC");
+        buy = new GuiButton(2, guiWidth + 85, guiHeight + 90, 30, 20, "Buy");
 
-		buttonList.add(qntMore);
-		buttonList.add(qntLess);
-		buttonList.add(buy);
-	}
+        buttonList.add(qntMore);
+        buttonList.add(qntLess);
+        buttonList.add(buy);
+    }
 
-	@Override
-	protected void actionPerformed(GuiButton guiButton)
-	{
-		if (!guiButton.enabled)
-			return;
+    @Override
+    protected void actionPerformed(GuiButton guiButton)
+    {
+        if (!guiButton.enabled)
+            return;
 
-		switch (guiButton.id)
-		{
-			case 0:
-				qnt = (qnt + 1 <= 32 ? qnt + 1 : qnt);
-				break;
-			case 1:
-				qnt = (qnt - 1 >= 1 ? qnt - 1 : qnt);
-				break;
-			case 2:
-				NetworkHandler.sendToServer(new MessageDelivery(qnt));
-				mc.thePlayer.closeScreen();
-				mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + "[" + EnumChatFormatting.GOLD + "iCraft" + EnumChatFormatting.BLUE + "] " + ICraftUtils.localize("msg.iCraft.delivery")));
-				break;
-		}
-	}
+        switch (guiButton.id)
+        {
+            case 0:
+                qnt = (qnt + 1 <= 32 ? qnt + 1 : qnt);
+                break;
+            case 1:
+                qnt = (qnt - 1 >= 1 ? qnt - 1 : qnt);
+                break;
+            case 2:
+                NetworkHandler.sendToServer(new MessageDelivery(qnt));
+                mc.thePlayer.closeScreen();
+                mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + "[" + EnumChatFormatting.GOLD + "iCraft" + EnumChatFormatting.BLUE + "] " + ICraftUtils.localize("msg.iCraft.delivery")));
+                break;
+        }
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTick)
@@ -111,20 +110,18 @@ public class GuiiCraftDelivery extends GuiiCraftBase
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
-	@Override
-	protected void mouseClicked(int x, int y, int button)
-	{
-		super.mouseClicked(x, y, button);
+    @Override
+    protected void mouseClicked(int x, int y, int button)
+    {
+        super.mouseClicked(x, y, button);
 
-		if (button == 0)
-		{
-			int xAxis = x - guiWidth;
-			int yAxis = y - guiHeight;
-			// Exit
-			if(xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
-			{
-				mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-			}
-		}
-	}
+        if (button == 0)
+        {
+            int xAxis = x - guiWidth;
+            int yAxis = y - guiHeight;
+            // Exit
+            if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
+                mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
+        }
+    }
 }

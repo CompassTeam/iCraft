@@ -2,14 +2,13 @@ package iCraft.client.voice;
 
 import iCraft.core.ICraft;
 
+import javax.sound.sampled.AudioFormat;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
-
-import javax.sound.sampled.AudioFormat;
 
 public class VoiceClient extends Thread
 {

@@ -8,8 +8,6 @@ import iCraft.core.utils.ICraftUtils;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
@@ -52,17 +50,15 @@ public class GuiiCraftContacts extends GuiiCraftBase
 
     public int getScroll()
     {
-        return Math.max(Math.min((int)(scroll * 55), 55), 0);
+        return Math.max(Math.min((int) (scroll * 55), 55), 0);
     }
 
     public int getIndex()
     {
-        if(list.size() <= 5)
-        {
+        if (list.size() <= 5)
             return 0;
-        }
 
-        return (int)((list.size() * scroll) - ((5 / (float)list.size())) * scroll);
+        return (int) ((list.size() * scroll) - ((5 / (float) list.size())) * scroll);
     }
 
     @Override
@@ -127,14 +123,10 @@ public class GuiiCraftContacts extends GuiiCraftBase
             int yAxis = y - guiHeight;
             // Exit
             if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
-            {
                 mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-            }
             // Contact List Mode
             if (xAxis >= 114 && xAxis <= 122 && yAxis >= 36 && yAxis <= 44)
-            {
                 isInEditMode = !isInEditMode;
-            }
             // Slider
             if (xAxis >= 113 && xAxis <= 123 && yAxis >= getScroll() + 67 && yAxis <= getScroll() + 67 + 15)
             {
@@ -151,7 +143,7 @@ public class GuiiCraftContacts extends GuiiCraftBase
                 {
                     int yStart = i * 14 + 67;
 
-                    if(xAxis >= 52 && xAxis <= 111 && yAxis >= yStart && yAxis <= yStart + 14)
+                    if (xAxis >= 52 && xAxis <= 111 && yAxis >= yStart && yAxis <= yStart + 14)
                     {
                         if (!isInEditMode)
                             NetworkHandler.sendToServer(new MessageIncomeCalling(mc.thePlayer.getCurrentEquippedItem().stackTagCompound.getInteger("number"), list.get(getIndex() + i)));
@@ -170,8 +162,8 @@ public class GuiiCraftContacts extends GuiiCraftBase
 
         int yAxis = mouseY - guiHeight;
 
-        if(isDragging)
-            scroll = Math.min(Math.max((float)(yAxis - 67 - dragOffset) / 55, 0), 1);
+        if (isDragging)
+            scroll = Math.min(Math.max((float) (yAxis - 67 - dragOffset) / 55, 0), 1);
     }
 
     @Override
@@ -179,7 +171,7 @@ public class GuiiCraftContacts extends GuiiCraftBase
     {
         super.mouseMovedOrUp(x, y, type);
 
-        if(type == 0 && isDragging)
+        if (type == 0 && isDragging)
         {
             dragOffset = 0;
             isDragging = false;
@@ -199,7 +191,7 @@ public class GuiiCraftContacts extends GuiiCraftBase
             if (i < 0)
                 i = -1;
 
-            scroll = Math.min(Math.max((float)((double)scroll - (double)i / (double)20), 0), 1);
+            scroll = Math.min(Math.max((float) ((double) scroll - (double) i / (double) 20), 0), 1);
         }
     }
 
@@ -211,13 +203,12 @@ public class GuiiCraftContacts extends GuiiCraftBase
         {
             if (keyCode == 28)
             {
-                if (!list.contains(Integer.parseInt(textField.getText())) && NumberUtils.isNumber(textField.getText()))
+                if (textField.getText().matches("[0-9]+") && textField.getText().length() == 8 && !list.contains(Integer.parseInt(textField.getText())))
                     NetworkHandler.sendToServer(new MessageContacts(0, Integer.parseInt(textField.getText())));
 
                 textField.setText("");
             }
-        }
-        else
+        } else
             super.keyTyped(ch, keyCode);
     }
 

@@ -18,52 +18,50 @@ import java.util.UUID;
 
 public class EntityPackingCase extends Entity
 {
-	public ItemStack[] storedItems;
+    public ItemStack[] storedItems;
     private ItemStack itemStack;
-	private boolean hasLanded;
+    private boolean hasLanded;
     private GameProfile profile;
 
-	public EntityPackingCase(World world, ItemStack[] storedItems, ItemStack itemStack, UUID id, String name)
-	{
-		this(world);
-		this.storedItems = storedItems;
+    public EntityPackingCase(World world, ItemStack[] storedItems, ItemStack itemStack, UUID id, String name)
+    {
+        this(world);
+        this.storedItems = storedItems;
         this.itemStack = itemStack;
-		hasLanded = false;
+        hasLanded = false;
         profile = new GameProfile(id, name);
-	}
+    }
 
-	public EntityPackingCase(World world)
-	{
-		super(world);
-	}
+    public EntityPackingCase(World world)
+    {
+        super(world);
+    }
 
-	@Override
-	protected void entityInit() {}
+    @Override
+    protected void entityInit() {}
 
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbtTags)
-	{
-		final NBTTagList tagList = nbtTags.getTagList("Items", NBT.TAG_COMPOUND);
-		storedItems = new ItemStack[1];
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound nbtTags)
+    {
+        final NBTTagList tagList = nbtTags.getTagList("Items", NBT.TAG_COMPOUND);
+        storedItems = new ItemStack[1];
 
-		for (int tagCount = 0; tagCount < tagList.tagCount(); ++tagCount)
-		{
-			final NBTTagCompound tagCompound = tagList.getCompoundTagAt(tagCount);
-			final int slotID = tagCompound.getByte("Slot") & 255;
+        for (int tagCount = 0; tagCount < tagList.tagCount(); ++tagCount)
+        {
+            final NBTTagCompound tagCompound = tagList.getCompoundTagAt(tagCount);
+            final int slotID = tagCompound.getByte("Slot") & 255;
 
-			if (slotID < storedItems.length)
-			{
-				storedItems[slotID] = ItemStack.loadItemStackFromNBT(tagCompound);
-			}
-		}
+            if (slotID < storedItems.length)
+                storedItems[slotID] = ItemStack.loadItemStackFromNBT(tagCompound);
+        }
 
-		hasLanded = nbtTags.getBoolean("hasLanded");
-	}
+        hasLanded = nbtTags.getBoolean("hasLanded");
+    }
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbtTags)
-	{
-		final NBTTagList tagList = new NBTTagList();
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound nbtTags)
+    {
+        final NBTTagList tagList = new NBTTagList();
 
         for (int slotCount = 0; slotCount < storedItems.length; ++slotCount)
         {
@@ -78,12 +76,12 @@ public class EntityPackingCase extends Entity
 
         nbtTags.setTag("Items", tagList);
         nbtTags.setBoolean("hasLanded", hasLanded);
-	}
+    }
 
-	@Override
+    @Override
     public void onUpdate()
     {
-		if (!hasLanded)
+        if (!hasLanded)
         {
             if (onGround && !worldObj.isRemote)
             {
@@ -125,32 +123,30 @@ public class EntityPackingCase extends Entity
                 }
             }
             else
-            {
                 motionY = -0.25;
-            }
 
             moveEntity(0, motionY, 0);
         }
     }
 
-	private boolean placeCase(int x, int y, int z)
-	{
-		worldObj.setBlock(x, y, z, ICraft.caseBlock, 0, 3);
+    private boolean placeCase(int x, int y, int z)
+    {
+        worldObj.setBlock(x, y, z, ICraft.caseBlock, 0, 3);
         worldObj.removeTileEntity(x, y, z);
-		final TileEntity te = new TilePackingCase(profile, itemStack);
+        final TileEntity te = new TilePackingCase(profile, itemStack);
         worldObj.setTileEntity(x, y, z, te);
 
-		if (te instanceof TilePackingCase && storedItems != null)
-		{
-			final TilePackingCase packingCase = (TilePackingCase)te;
+        if (te instanceof TilePackingCase && storedItems != null)
+        {
+            final TilePackingCase packingCase = (TilePackingCase) te;
 
-			packingCase.inventory = new ItemStack[1];
-			packingCase.inventory[0] = storedItems[0];
+            packingCase.inventory = new ItemStack[1];
+            packingCase.inventory[0] = storedItems[0];
 
-			return true;
-		}
-		hasLanded = true;
+            return true;
+        }
+        hasLanded = true;
 
-		return true;
-	}
+        return true;
+    }
 }

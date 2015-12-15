@@ -5,13 +5,13 @@ import iCraft.core.utils.ICraftUtils;
 
 public class GuiiCraftSettings extends GuiiCraftBase
 {
-	public GuiiCraftSettings(String resource)
-	{
-		super(resource);
-	}
+    public GuiiCraftSettings(String resource)
+    {
+        super(resource);
+    }
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
     {
         super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
 
@@ -34,30 +34,24 @@ public class GuiiCraftSettings extends GuiiCraftBase
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
-	@Override
-	protected void mouseClicked(int x, int y, int button)
-	{
-		super.mouseClicked(x, y, button);
+    @Override
+    protected void mouseClicked(int x, int y, int button)
+    {
+        super.mouseClicked(x, y, button);
 
-		if (button == 0)
-		{
-			int xAxis = x - guiWidth;
-			int yAxis = y - guiHeight;
-			// Exit
-			if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
-			{
-				mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-			}
-			// Blacklist
-			if (xAxis >= 51 && xAxis <= 124 && yAxis >= 54 && yAxis <= 67)
-			{
-				mc.thePlayer.openGui(ICraft.instance, 13, mc.theWorld, 0, 0, 0);
-			}
+        if (button == 0)
+        {
+            int xAxis = x - guiWidth;
+            int yAxis = y - guiHeight;
+            // Exit
+            if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
+                mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
+            // Blacklist
+            if (xAxis >= 51 && xAxis <= 124 && yAxis >= 54 && yAxis <= 67)
+                mc.thePlayer.openGui(ICraft.instance, 13, mc.theWorld, 0, 0, 0);
             // Contacts
             if (xAxis >= 51 && xAxis <= 124 && yAxis >= 68 && yAxis <= 84)
-            {
                 mc.thePlayer.openGui(ICraft.instance, 14, mc.theWorld, 0, 0, 0);
-            }
-		}
-	}
+        }
+    }
 }

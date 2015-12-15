@@ -1,24 +1,24 @@
 package iCraft.client.gui;
 
-import iCraft.client.InternetHandler;
-import iCraft.core.ICraft;
-import iCraft.core.utils.ICraftUtils;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import iCraft.client.InternetHandler;
+import iCraft.core.ICraft;
+import iCraft.core.utils.ICraftUtils;
 import net.minecraft.util.ChatComponentText;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraft extends GuiiCraftBase
 {
-	public GuiiCraft(String resource)
-	{
-		super(resource);
-	}
+    public GuiiCraft(String resource)
+    {
+        super(resource);
+    }
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
-	{
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
+    {
         super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
 
         int xAxis = mouseX - guiWidth;
@@ -52,53 +52,52 @@ public class GuiiCraft extends GuiiCraftBase
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
-	@Override
-	protected void mouseClicked(int x, int y, int button)
-	{
-		super.mouseClicked(x, y, button);
+    @Override
+    protected void mouseClicked(int x, int y, int button)
+    {
+        super.mouseClicked(x, y, button);
 
-		if (button == 0)
-		{
-			int xAxis = x - guiWidth;
-			int yAxis = y - guiHeight;
-			// Calc
-			if (xAxis >= 51 && xAxis <= 67 && yAxis >= 38 && yAxis <= 54)
-				mc.thePlayer.openGui(ICraft.instance, 1, mc.theWorld, 0, 0, 0);
-			// Internet
-			if (xAxis >= 70 && xAxis <= 86 && yAxis >= 38 && yAxis <= 54)
-			{
-                if(Loader.isModLoaded("MCEF") && !(mc.currentScreen instanceof GuiiCraftBrowser))
+        if (button == 0)
+        {
+            int xAxis = x - guiWidth;
+            int yAxis = y - guiHeight;
+            // Calc
+            if (xAxis >= 51 && xAxis <= 67 && yAxis >= 38 && yAxis <= 54)
+                mc.thePlayer.openGui(ICraft.instance, 1, mc.theWorld, 0, 0, 0);
+            // Internet
+            if (xAxis >= 70 && xAxis <= 86 && yAxis >= 38 && yAxis <= 54) {
+                if (Loader.isModLoaded("MCEF") && !(mc.currentScreen instanceof GuiiCraftBrowser))
                 {
                     mc.displayGuiScreen(InternetHandler.hasBackup() ? InternetHandler.backup : new GuiiCraftBrowser());
                     InternetHandler.backup = null;
                 }
                 else
                     mc.thePlayer.addChatMessage(new ChatComponentText("[iCraft] You need MCEF in order to use this function."));
-			}
-			// Clock
-			if (xAxis >= 89 && xAxis <= 105 && yAxis >= 38 && yAxis <= 54)
-				mc.thePlayer.openGui(ICraft.instance, 3, mc.theWorld, 0, 0, 0);
-			// Settings
-			if (xAxis >= 108 && xAxis <= 124 && yAxis >= 38 && yAxis <= 54)
-				mc.thePlayer.openGui(ICraft.instance, 4, mc.theWorld, 0, 0, 0);
-			// NumPad
-			if (xAxis >= 51 && xAxis <= 67 && yAxis >= 58 && yAxis <= 74)
-				mc.thePlayer.openGui(ICraft.instance, 5, mc.theWorld, 0, 0, 0);
-			// SMS --> WIP
-			if (xAxis >= 70 && xAxis <= 86 && yAxis >= 58 && yAxis <= 74)
+            }
+            // Clock
+            if (xAxis >= 89 && xAxis <= 105 && yAxis >= 38 && yAxis <= 54)
+                mc.thePlayer.openGui(ICraft.instance, 3, mc.theWorld, 0, 0, 0);
+            // Settings
+            if (xAxis >= 108 && xAxis <= 124 && yAxis >= 38 && yAxis <= 54)
+                mc.thePlayer.openGui(ICraft.instance, 4, mc.theWorld, 0, 0, 0);
+            // NumPad
+            if (xAxis >= 51 && xAxis <= 67 && yAxis >= 58 && yAxis <= 74)
+                mc.thePlayer.openGui(ICraft.instance, 5, mc.theWorld, 0, 0, 0);
+            // SMS --> WIP
+            if (xAxis >= 70 && xAxis <= 86 && yAxis >= 58 && yAxis <= 74)
                 mc.thePlayer.openGui(ICraft.instance, 8, mc.theWorld, 0, 0, 0);
-			// Online Buy
-			if (xAxis >= 89 && xAxis <= 105 && yAxis >= 58 && yAxis <= 74)
-			{
-				if (ICraft.isIBayActive && !ICraftUtils.items.isEmpty())
-					mc.thePlayer.openGui(ICraft.instance, 9, mc.theWorld, 0, 0, 0);
-			}
-			// MP3 Player
-			if (xAxis >= 108 && xAxis <= 124 && yAxis >= 58 && yAxis <= 74)
-				mc.thePlayer.openGui(ICraft.instance, 10, mc.theWorld, 0, 0, 0);
-			// Pizza Delivery
-			if (xAxis >= 51 && xAxis <= 67 && yAxis >= 78 && yAxis <= 94)
-				mc.thePlayer.openGui(ICraft.instance, 12, mc.theWorld, 0, 0, 0);
-		}
-	}
+            // Online Buy
+            if (xAxis >= 89 && xAxis <= 105 && yAxis >= 58 && yAxis <= 74)
+            {
+                if (ICraft.isIBayActive && !ICraftUtils.items.isEmpty())
+                    mc.thePlayer.openGui(ICraft.instance, 9, mc.theWorld, 0, 0, 0);
+            }
+            // MP3 Player
+            if (xAxis >= 108 && xAxis <= 124 && yAxis >= 58 && yAxis <= 74)
+                mc.thePlayer.openGui(ICraft.instance, 10, mc.theWorld, 0, 0, 0);
+            // Pizza Delivery
+            if (xAxis >= 51 && xAxis <= 67 && yAxis >= 78 && yAxis <= 94)
+                mc.thePlayer.openGui(ICraft.instance, 12, mc.theWorld, 0, 0, 0);
+        }
+    }
 }

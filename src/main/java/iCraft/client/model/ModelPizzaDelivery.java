@@ -13,15 +13,25 @@ import net.minecraft.util.MathHelper;
 @SideOnly(Side.CLIENT)
 public class ModelPizzaDelivery extends ModelBase
 {
-    /** The head box of the PizzaDeliveryModel */
+    /**
+     * The head box of the PizzaDeliveryModel
+     */
     public ModelRenderer deliveryHead;
-    /** The body of the PizzaDeliveryModel */
+    /**
+     * The body of the PizzaDeliveryModel
+     */
     public ModelRenderer deliveryBody;
-    /** The arms of the PizzaDeliveryModel */
+    /**
+     * The arms of the PizzaDeliveryModel
+     */
     public ModelRenderer deliveryArms;
-    /** The right leg of the PizzaDeliveryModel */
+    /**
+     * The right leg of the PizzaDeliveryModel
+     */
     public ModelRenderer rightDeliveryLeg;
-    /** The left leg of the PizzaDeliveryModel */
+    /**
+     * The left leg of the PizzaDeliveryModel
+     */
     public ModelRenderer leftDeliveryLeg;
     public ModelRenderer deliveryNose;
 
@@ -64,13 +74,13 @@ public class ModelPizzaDelivery extends ModelBase
 
     public void setRotationAngles(float p_78087_1_, float p_78087_2_, float p_78087_3_, float p_78087_4_, float p_78087_5_, float p_78087_6_, Entity p_78087_7_)
     {
-        deliveryHead.rotateAngleY = p_78087_4_ / (180F / (float)Math.PI);
-        deliveryHead.rotateAngleX = p_78087_5_ / (180F / (float)Math.PI);
+        deliveryHead.rotateAngleY = p_78087_4_ / (180F / (float) Math.PI);
+        deliveryHead.rotateAngleX = p_78087_5_ / (180F / (float) Math.PI);
         deliveryArms.rotationPointY = 3.0F;
         deliveryArms.rotationPointZ = -1.0F;
         deliveryArms.rotateAngleX = -0.75F;
         rightDeliveryLeg.rotateAngleX = MathHelper.cos(p_78087_1_ * 0.6662F) * 1.4F * p_78087_2_ * 0.5F;
-        leftDeliveryLeg.rotateAngleX = MathHelper.cos(p_78087_1_ * 0.6662F + (float)Math.PI) * 1.4F * p_78087_2_ * 0.5F;
+        leftDeliveryLeg.rotateAngleX = MathHelper.cos(p_78087_1_ * 0.6662F + (float) Math.PI) * 1.4F * p_78087_2_ * 0.5F;
         rightDeliveryLeg.rotateAngleY = 0.0F;
         leftDeliveryLeg.rotateAngleY = 0.0F;
     }

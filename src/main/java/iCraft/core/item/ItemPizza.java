@@ -6,15 +6,15 @@ import net.minecraft.item.ItemFood;
 
 public class ItemPizza extends ItemFood
 {
-	public ItemPizza()
-	{
-		super(8, false);
-		setCreativeTab(CreativeTabs.tabMisc);
-	}
+    public ItemPizza()
+    {
+        super(8, false);
+        setCreativeTab(CreativeTabs.tabFood);
+    }
 
-	@Override
-	public void registerIcons(IIconRegister register)
-	{
-		itemIcon = register.registerIcon("icraft:" + getUnlocalizedName().replace("item.", ""));
-	}
+    @Override
+    public void registerIcons(IIconRegister register)
+    {
+        itemIcon = register.registerIcon("icraft:" + getUnlocalizedName().replace("item.", ""));
+    }
 }

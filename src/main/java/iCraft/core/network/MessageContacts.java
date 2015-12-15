@@ -19,6 +19,7 @@ public class MessageContacts extends MessageBase<MessageContacts>
     {
         this(status, 0);
     }
+
     public MessageContacts(int status, int number)
     {
         this.status = status;
@@ -40,7 +41,9 @@ public class MessageContacts extends MessageBase<MessageContacts>
     }
 
     @Override
-    public void handleClientSide(MessageContacts message, EntityPlayer player) {}
+    public void handleClientSide(MessageContacts message, EntityPlayer player)
+    {
+    }
 
     @Override
     public void handleServerSide(MessageContacts message, EntityPlayer player)

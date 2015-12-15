@@ -20,7 +20,7 @@ public class MessageCraftBay extends MessageBase<MessageCraftBay>
     private ItemStack buyStack;
     private ItemStack sellStack;
 
-	public MessageCraftBay() {}
+    public MessageCraftBay() {}
 
     public MessageCraftBay(Item buyItem, int buyQnt, int buyMeta, Item sellItem, int sellQnt, int sellMeta)
     {
@@ -32,31 +32,31 @@ public class MessageCraftBay extends MessageBase<MessageCraftBay>
         this.sellMeta = sellMeta;
     }
 
-	@Override
-	public void fromBytes(ByteBuf buf)
-	{
+    @Override
+    public void fromBytes(ByteBuf buf)
+    {
         buyStack = ByteBufUtils.readItemStack(buf);
         sellStack = ByteBufUtils.readItemStack(buf);
     }
 
-	@Override
-	public void toBytes(ByteBuf buf)
+    @Override
+    public void toBytes(ByteBuf buf)
     {
         ByteBufUtils.writeItemStack(buf, new ItemStack(buyItem, buyQnt, buyMeta));
         ByteBufUtils.writeItemStack(buf, new ItemStack(sellItem, sellQnt, sellMeta));
-	}
+    }
 
-	@Override
-	public void handleClientSide(MessageCraftBay message, EntityPlayer player) {}
+    @Override
+    public void handleClientSide(MessageCraftBay message, EntityPlayer player) {}
 
-	@Override
-	public void handleServerSide(MessageCraftBay message, EntityPlayer player)
-	{
-		World world = player.getEntityWorld();
-		ItemStack[] stack = new ItemStack[1];
-		stack[0] = message.buyStack;
-		Entity packingCase = new EntityPackingCase(world, stack, message.sellStack, player.getGameProfile().getId(), player.getGameProfile().getName());
-		packingCase.setPosition(player.posX, (player.posY + 75 <= 256 ? player.posY + 75 : 75), player.posZ);
-		world.spawnEntityInWorld(packingCase);
-	}
+    @Override
+    public void handleServerSide(MessageCraftBay message, EntityPlayer player)
+    {
+        World world = player.getEntityWorld();
+        ItemStack[] stack = new ItemStack[1];
+        stack[0] = message.buyStack;
+        Entity packingCase = new EntityPackingCase(world, stack, message.sellStack, player.getGameProfile().getId(), player.getGameProfile().getName());
+        packingCase.setPosition(player.posX, (player.posY + 75 <= 256 ? player.posY + 75 : 75), player.posZ);
+        world.spawnEntityInWorld(packingCase);
+    }
 }

@@ -2,301 +2,200 @@ package iCraft.client.mp3;
 
 import iCraft.core.ICraft;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import javax.media.*;
+import javax.media.format.AudioFormat;
+import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.Port;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-
-import org.tritonus.share.sampled.file.TAudioFileFormat;
-
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
-
-public class MP3Player
+public class MP3Player implements ControllerListener
 {
-	private final static int NOTSTARTED = 0;
-	private final static int PLAYING = 1;
-	private final static int PAUSED = 2;
-	private final static int FINISHED = 3;
+    private final static int NOTSTARTED = 0;
+    private final static int PLAYING = 1;
+    private final static int PAUSED = 2;
 
-	// the player actually doing all the work
-	private Player player;
+    // The player actually doing all the work
+    private Player player;
 
-	// locking object used to communicate with player thread
-	private final Object playerLock = new Object();
+    // Status variable what player thread is doing/supposed to do
+    private int playerStatus = NOTSTARTED;
 
-	// status variable what player thread is doing/supposed to do
-	private int playerStatus = NOTSTARTED;
+    // The path to the music
+    private URL music;
 
-	// Repeat type for this player
-	private int repeatType = 0;
+    // Repeat type for this player
+    private int repeatType = 0;
 
-	public void setMusic(final InputStream inputStream) throws JavaLayerException
-	{
-		player = new Player(inputStream);
-	}
+    // Time when the player was paused
+    private Time mediaTime;
 
-	public int getPlayerStatus()
-	{
-		return playerStatus;
-	}
+    public MP3Player()
+    {
+        Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
+        Format input2 = new AudioFormat(AudioFormat.MPEG);
+        Format output = new AudioFormat(AudioFormat.LINEAR);
+        PlugInManager.addPlugIn("com.sun.media.codec.audio.mp3.JavaDecoder", new Format[]{input1, input2}, new Format[]{output}, PlugInManager.CODEC);
+    }
 
-	public void resetPlayerStatus()
-	{
-		playerStatus = NOTSTARTED;
-	}
+    public void setMusic(URL url) throws IOException, NoPlayerException
+    {
+        music = url;
+    }
 
-	public void setRepeatType(int newRepeatType)
-	{
-		repeatType = newRepeatType;
-	}
+    public void setRepeatType(int type)
+    {
+        repeatType = type;
+    }
 
-	public int getRepeatType()
-	{
-		return repeatType;
-	}
+    public int getRepeatType()
+    {
+        return repeatType;
+    }
 
-	/**
-	 * Starts playback (resumes if paused)
-	 */
-	public void play() throws JavaLayerException
-	{
-		if (player == null)
-			return;
+    public int getPlayerStatus()
+    {
+        return playerStatus;
+    }
 
-		synchronized (playerLock)
-		{
-			switch (playerStatus)
-			{
-			case NOTSTARTED:
-				final Runnable r = new Runnable() {
-					public void run() {
-						playInternal();
-					}
-				};
-				Thread t = new Thread(r);
-				t.setPriority(Thread.MAX_PRIORITY);
-				playerStatus = PLAYING;
-				t.start();
-				break;
-			case PAUSED:
-				resume();
-				break;
-			default:
-				break;
-			}
-		}
-	}
+    public void resetPlayerStatus()
+    {
+        playerStatus = NOTSTARTED;
+    }
 
-	/**
-	 * Replays music.
-	 */
-	public void rePlay() throws JavaLayerException
-	{
-		try {
-			FileInputStream input = new FileInputStream(ICraft.musics.get((ICraft.currentMusicId)));
-			resetPlayerStatus();
-			setMusic(input);
-			play();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    public boolean hasPlayer()
+    {
+        return player != null;
+    }
 
-	/**
-	 * Pauses playback. Returns true if new state is PAUSED.
-	 */
-	public boolean pause()
-	{
-		synchronized (playerLock)
-		{
-			if (playerStatus == PLAYING)
-				playerStatus = PAUSED;
+    /**
+     * Starts playback (resumes if paused)
+     */
+    public void play() throws IOException, NoPlayerException
+    {
+        switch (playerStatus)
+        {
+            case NOTSTARTED:
+                player = Manager.createPlayer(new MediaLocator(music));
+                player.addControllerListener(this);
+                player.realize();
+                player.start();
 
-			return playerStatus == PAUSED;
-		}
-	}
+                playerStatus = PLAYING;
+                break;
+            case PAUSED:
+                resume();
+                break;
+            default:
+                break;
+        }
+    }
 
-	/**
-	 * Resumes playback. Returns true if the new state is PLAYING.
-	 */
-	public boolean resume()
-	{
-		synchronized (playerLock)
-		{
-			if (playerStatus == PAUSED)
-			{
-				playerStatus = PLAYING;
-				playerLock.notifyAll();
-			}
-			return playerStatus == PLAYING;
-		}
-	}
+    /**
+     * Pauses playback. Returns true if new state is PAUSED.
+     */
+    public boolean pause()
+    {
+        if (playerStatus == PLAYING)
+        {
+            mediaTime = player.getMediaTime();
+            player.stop();
 
-	private void playInternal()
-	{
-		while (playerStatus != FINISHED)
-		{
-			try {
-				if (!player.play(1))
-				{
-					break;
-				}
-			} catch (JavaLayerException e) {
-				break;
-			}
-			// check if paused or terminated
-			synchronized (playerLock)
-			{
-				while (playerStatus == PAUSED)
-				{
-					try {
-						playerLock.wait();
-					} catch (InterruptedException e) {
-						// terminate player
-						break;
-					}
-				}
-			}
-		}
-		close();
-		if (repeatType == 1)
-		{
-			try {
-				FileInputStream input = new FileInputStream(ICraft.musics.get((ICraft.currentMusicId + 1 > ICraft.musics.size() - 1 ? 0 : ICraft.currentMusicId + 1)).getPath());
-				ICraft.currentMusicId = (ICraft.currentMusicId + 1 > ICraft.musics.size() - 1 ? 0 : ICraft.currentMusicId + 1);
-				resetPlayerStatus();
-				setMusic(input);
-				play();
-				Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + "[" + EnumChatFormatting.GOLD + "iCraft" + EnumChatFormatting.BLUE + "] " + EnumChatFormatting.GREEN + "Playing " + EnumChatFormatting.DARK_PURPLE + ICraft.musicNames.get(ICraft.currentMusicId)));
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
-		else if (repeatType == 2)
-		{
-			try {
-				rePlay();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
+            playerStatus = PAUSED;
+        }
 
-	/**
-	 * Stop the player, used for click-select music.
-	 */
-	public void stop()
-	{
-		synchronized (playerLock)
-		{
-			playerStatus = PAUSED;
-		}
-		try {
-			player.close();
-		} catch (Exception e) {}
-	}
+        return playerStatus == PAUSED;
+    }
 
-	/**
-	 * Closes the player, regardless of current state.
-	 */
-	public void close()
-	{
-		synchronized (playerLock)
-		{
-			playerStatus = FINISHED;
-		}
-		try {
-			player.close();
-		} catch (Exception e) {}
-	}
+    /**
+     * Resumes playback. Returns true if the new state is PLAYING.
+     */
+    public boolean resume()
+    {
+        if (playerStatus == PAUSED)
+        {
+            player.setMediaTime(mediaTime);
+            player.start();
 
-	public boolean hasPlayer()
-	{
-		return player != null;
-	}
+            playerStatus = PLAYING;
+        }
+        return playerStatus == PLAYING;
+    }
 
-	public void setVolume(float ctrl)
-	{
-		try {
-			Mixer.Info[] infos = AudioSystem.getMixerInfo();
-			for (Mixer.Info info : infos) {
-				Mixer mixer = AudioSystem.getMixer(info);
-				if (mixer.isLineSupported(Port.Info.SPEAKER))
-				{
-					Port port = (Port) mixer.getLine(Port.Info.SPEAKER);
-					port.open();
-					if (port.isControlSupported(FloatControl.Type.VOLUME))
-					{
-						FloatControl volume = (FloatControl) port.getControl(FloatControl.Type.VOLUME);
-						volume.setValue(ctrl);
-					}
-					port.close();
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    /**
+     * Closes the player, regardless of current state.
+     */
+    public void close()
+    {
+        if (player != null)
+        {
+            player.stop();
+            player.close();
+        }
+    }
 
-	private int getDuration(File file)
-	{
-		try {
-			AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
-			if (fileFormat instanceof TAudioFileFormat)
-			{
-				Map<?, ?> properties = fileFormat.properties();
-				String key = "duration";
-				return (int)(TimeUnit.MICROSECONDS.toMillis((Long)properties.get(key)));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    private void playNextMusic() throws IOException, NoPlayerException
+    {
+        if (ICraft.currentMusicId + 1 > ICraft.musics.size() - 1 && repeatType == 0)
+        {
+            close();
+            resetPlayerStatus();
+        }
+        else if (repeatType == 0 || repeatType == 1)
+        {
+            close();
+            setMusic(ICraft.musics.get((ICraft.currentMusicId + 1 > ICraft.musics.size() - 1 ? 0 : ICraft.currentMusicId + 1)).toURI().toURL());
 
-		return 0;
-	}
+            resetPlayerStatus();
 
-	public String getMinDuration()
-	{
-		try {
-			long minDuration = getDuration(ICraft.musics.get(ICraft.currentMusicId));
-			return (new SimpleDateFormat("mm:ss")).format(new Date(minDuration));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+            play();
+        }
+    }
 
-	public String getPosition()
-	{
-		if (player != null)
-		{
-			long position = player.getPosition();
-			return (new SimpleDateFormat("mm:ss")).format(new Date(position));
-		}
-		return null;
-	}
+    @Override
+    public void controllerUpdate(ControllerEvent evt)
+    {
+        if (player == null)
+            return;
 
-	public int getMusicStatus(int i)
-	{
-		try {
-			return (playerStatus != FINISHED ? (getDuration(ICraft.musics.get(ICraft.currentMusicId)) == 0 ? 0 : player.getPosition() * i / getDuration(ICraft.musics.get(ICraft.currentMusicId))) : 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
+        if (evt instanceof EndOfMediaEvent)
+        {
+            try {
+                switch (repeatType)
+                {
+                    case 0: case 1:
+                        playNextMusic();
+                        break;
+                    case 2:
+                        close();
+
+                        resetPlayerStatus();
+
+                        play();
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String getPosition()
+    {
+        return (new SimpleDateFormat("mm:ss")).format(new Date(TimeUnit.NANOSECONDS.toMillis(player.getMediaNanoseconds())));
+    }
+
+    public String getMinDuration()
+    {
+        return (new SimpleDateFormat("mm:ss")).format(new Date(TimeUnit.NANOSECONDS.toMillis(player.getDuration().getNanoseconds())));
+    }
+
+    public int getMusicStatus(int i)
+    {
+        if (player == null)
+            return 0;
+
+        return (int) (TimeUnit.NANOSECONDS.toSeconds(player.getMediaNanoseconds()) * i / player.getDuration().getSeconds());
+    }
 }

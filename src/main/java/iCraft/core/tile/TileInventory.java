@@ -10,173 +10,176 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 public abstract class TileInventory extends TileBlock implements ISidedInventory
 {
-	/** The inventory slot itemstacks used by this block. */
-	public ItemStack[] inventory;
+    /**
+     * The inventory slot itemstacks used by this block.
+     */
+    public ItemStack[] inventory;
 
-	/** The full name of this tile. */
-	public String fullName;
+    /**
+     * The full name of this tile.
+     */
+    public String fullName;
 
-	/**
-	 * A simple tile entity with a container and facing state.
-	 * @param name - full name of this tile entity
-	 */
-	public TileInventory(String name)
-	{
-		fullName = name;
-	}
+    /**
+     * A simple tile entity with a container and facing state.
+     *
+     * @param name - full name of this tile entity
+     */
+    public TileInventory(String name)
+    {
+        fullName = name;
+    }
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbtTags)
-	{
-		super.readFromNBT(nbtTags);
-		
-		NBTTagList tagList = nbtTags.getTagList("Items", NBT.TAG_COMPOUND);
-		inventory = new ItemStack[getSizeInventory()];
+    @Override
+    public void readFromNBT(NBTTagCompound nbtTags)
+    {
+        super.readFromNBT(nbtTags);
 
-		for(int tagCount = 0; tagCount < tagList.tagCount(); tagCount++)
-		{
-			NBTTagCompound tagCompound = tagList.getCompoundTagAt(tagCount);
-			byte slotID = tagCompound.getByte("Slot");
+        NBTTagList tagList = nbtTags.getTagList("Items", NBT.TAG_COMPOUND);
+        inventory = new ItemStack[getSizeInventory()];
 
-			if(slotID >= 0 && slotID < getSizeInventory())
-				setInventorySlotContents(slotID, ItemStack.loadItemStackFromNBT(tagCompound));
-		}
-	}
+        for (int tagCount = 0; tagCount < tagList.tagCount(); tagCount++)
+        {
+            NBTTagCompound tagCompound = tagList.getCompoundTagAt(tagCount);
+            byte slotID = tagCompound.getByte("Slot");
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbtTags)
-	{
-		super.writeToNBT(nbtTags);
+            if (slotID >= 0 && slotID < getSizeInventory())
+                setInventorySlotContents(slotID, ItemStack.loadItemStackFromNBT(tagCompound));
+        }
+    }
 
-		NBTTagList tagList = new NBTTagList();
+    @Override
+    public void writeToNBT(NBTTagCompound nbtTags)
+    {
+        super.writeToNBT(nbtTags);
 
-		for(int slotCount = 0; slotCount < getSizeInventory(); slotCount++)
-		{
-			if(getStackInSlot(slotCount) != null)
-			{
-				NBTTagCompound tagCompound = new NBTTagCompound();
-				tagCompound.setByte("Slot", (byte)slotCount);
-				getStackInSlot(slotCount).writeToNBT(tagCompound);
-				tagList.appendTag(tagCompound);
-			}
-		}
+        NBTTagList tagList = new NBTTagList();
 
-		nbtTags.setTag("Items", tagList);
-	}
+        for (int slotCount = 0; slotCount < getSizeInventory(); slotCount++)
+        {
+            if (getStackInSlot(slotCount) != null)
+            {
+                NBTTagCompound tagCompound = new NBTTagCompound();
+                tagCompound.setByte("Slot", (byte) slotCount);
+                getStackInSlot(slotCount).writeToNBT(tagCompound);
+                tagList.appendTag(tagCompound);
+            }
+        }
 
-	@Override
-	public int getSizeInventory()
-	{
-		return inventory.length;
-	}
+        nbtTags.setTag("Items", tagList);
+    }
 
-	@Override
-	public ItemStack getStackInSlot(int slotID)
-	{
-		return inventory[slotID];
-	}
+    @Override
+    public int getSizeInventory()
+    {
+        return inventory.length;
+    }
 
-	@Override
-	public ItemStack decrStackSize(int slotID, int amount)
-	{
-		if(getStackInSlot(slotID) != null)
-		{
-			ItemStack tempStack;
+    @Override
+    public ItemStack getStackInSlot(int slotID)
+    {
+        return inventory[slotID];
+    }
 
-			if(getStackInSlot(slotID).stackSize <= amount)
-			{
-				tempStack = getStackInSlot(slotID);
-				setInventorySlotContents(slotID, null);
-				return tempStack;
-			}
-			else
-			{
-				tempStack = getStackInSlot(slotID).splitStack(amount);
+    @Override
+    public ItemStack decrStackSize(int slotID, int amount)
+    {
+        if (getStackInSlot(slotID) != null)
+        {
+            ItemStack tempStack;
 
-				if(getStackInSlot(slotID).stackSize == 0)
-				{
-					setInventorySlotContents(slotID, null);
-				}
-				return tempStack;
-			}
-		}
-		else
-			return null;
-	}
+            if (getStackInSlot(slotID).stackSize <= amount)
+            {
+                tempStack = getStackInSlot(slotID);
+                setInventorySlotContents(slotID, null);
+                return tempStack;
+            }
+            else
+            {
+                tempStack = getStackInSlot(slotID).splitStack(amount);
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int slotID)
-	{
-		if (getStackInSlot(slotID) != null)
-		{
-			ItemStack tempStack = getStackInSlot(slotID);
-			setInventorySlotContents(slotID, null);
-			return tempStack;
-		}
-		else
-			return null;
-	}
+                if (getStackInSlot(slotID).stackSize == 0)
+                    setInventorySlotContents(slotID, null);
 
-	@Override
-	public void setInventorySlotContents(int slotID, ItemStack itemstack)
-	{
-		inventory[slotID] = itemstack;
+                return tempStack;
+            }
+        } else
+            return null;
+    }
 
-		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
-			itemstack.stackSize = getInventoryStackLimit();
-	}
+    @Override
+    public ItemStack getStackInSlotOnClosing(int slotID)
+    {
+        if (getStackInSlot(slotID) != null)
+        {
+            ItemStack tempStack = getStackInSlot(slotID);
+            setInventorySlotContents(slotID, null);
+            return tempStack;
+        }
+        else
+            return null;
+    }
 
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
-		return !isInvalid();
-	}
+    @Override
+    public void setInventorySlotContents(int slotID, ItemStack itemstack)
+    {
+        inventory[slotID] = itemstack;
 
-	@Override
-	public String getInventoryName()
-	{
-		return ICraftUtils.localize(getBlockType().getUnlocalizedName() + "." + fullName + ".name");
-	}
+        if (itemstack != null && itemstack.stackSize > getInventoryStackLimit())
+            itemstack.stackSize = getInventoryStackLimit();
+    }
 
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
-	}
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer entityplayer)
+    {
+        return !isInvalid();
+    }
 
-	@Override
-	public void openInventory() {}
+    @Override
+    public String getInventoryName()
+    {
+        return ICraftUtils.localize(getBlockType().getUnlocalizedName() + "." + fullName + ".name");
+    }
 
-	@Override
-	public void closeInventory() {}
+    @Override
+    public int getInventoryStackLimit()
+    {
+        return 64;
+    }
 
-	@Override
-	public boolean hasCustomInventoryName()
-	{
-		return true;
-	}
+    @Override
+    public void openInventory() {}
 
-	@Override
-	public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
-	{
-		return true;
-	}
+    @Override
+    public void closeInventory() {}
 
-	@Override
-	public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
-	{
-		return isItemValidForSlot(slotID, itemstack);
-	}
+    @Override
+    public boolean hasCustomInventoryName()
+    {
+        return true;
+    }
 
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side)
-	{
-		return new int[] {};
-	}
+    @Override
+    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
+    {
+        return true;
+    }
 
-	@Override
-	public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
-	{
-		return true;
-	}
+    @Override
+    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    {
+        return isItemValidForSlot(slotID, itemstack);
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side)
+    {
+        return new int[]{};
+    }
+
+    @Override
+    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    {
+        return true;
+    }
 }

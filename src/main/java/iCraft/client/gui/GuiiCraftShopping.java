@@ -1,10 +1,7 @@
 package iCraft.client.gui;
 
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.network.MessageCraftBay;
 import iCraft.core.network.NetworkHandler;
@@ -12,30 +9,32 @@ import iCraft.core.utils.ICraftClientUtils;
 import iCraft.core.utils.ICraftUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import java.util.Collection;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraftShopping extends GuiiCraftBase
 {
-	private int i = 0;
-	private int qnt = 1;
+    private int i = 0;
+    private int qnt = 1;
 
-	public GuiiCraftShopping(String resource)
-	{
-		super(resource);
-	}
+    public GuiiCraftShopping(String resource)
+    {
+        super(resource);
+    }
 
-	@Override
-	public void initGui()
-	{
-		super.initGui();
-		Keyboard.enableRepeatEvents(false);
-		buttonList.clear();
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        Keyboard.enableRepeatEvents(false);
+        buttonList.clear();
 
         GuiButton left = new GuiButton(0, guiWidth + 52, guiHeight + 75, 15, 20, "<");
         GuiButton right = new GuiButton(1, guiWidth + 96, guiHeight + 75, 15, 20, ">");
@@ -43,12 +42,12 @@ public class GuiiCraftShopping extends GuiiCraftBase
         GuiButton down = new GuiButton(3, guiWidth + 125, guiHeight + 58, 10, 10, "\u25BC");
         GuiButton buy = new GuiButton(4, guiWidth + 67, guiHeight + 75, 29, 20, "Buy");
 
-		buttonList.add(left);
-		buttonList.add(right);
+        buttonList.add(left);
+        buttonList.add(right);
         buttonList.add(up);
         buttonList.add(down);
-		buttonList.add(buy);
-	}
+        buttonList.add(buy);
+    }
 
     @Override
     public void updateScreen()
@@ -94,13 +93,11 @@ public class GuiiCraftShopping extends GuiiCraftBase
         itemRender.zLevel = 0.0F;
         GL11.glDisable(GL11.GL_LIGHTING);
         if (isMouseOver(98, 51, 16, 16, mouseX, mouseY))
-        {
             renderToolTip(getBuyStack(ICraftUtils.items.get(i).keySet()), mouseX, mouseY);
-        }
+
         if (isMouseOver(48, 51, 16, 16, mouseX, mouseY))
-        {
             renderToolTip(getSellStack(ICraftUtils.items.get(i).values()), mouseX, mouseY);
-        }
+
         GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -115,51 +112,49 @@ public class GuiiCraftShopping extends GuiiCraftBase
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
-	@Override
-	protected void actionPerformed(GuiButton guiButton)
-	{
-		if (!guiButton.enabled)
-			return;
+    @Override
+    protected void actionPerformed(GuiButton guiButton)
+    {
+        if (!guiButton.enabled)
+            return;
 
-		switch (guiButton.id)
-		{
-			case 0:
-				i = (i - 1 >= 0 ? i - 1 : ICraftUtils.items.size() - 1);
-				break;
-			case 1:
-				i = (i + 1 < ICraftUtils.items.size() ? i + 1 : 0);
-				break;
+        switch (guiButton.id)
+        {
+            case 0:
+                i = (i - 1 >= 0 ? i - 1 : ICraftUtils.items.size() - 1);
+                break;
+            case 1:
+                i = (i + 1 < ICraftUtils.items.size() ? i + 1 : 0);
+                break;
             case 2:
                 qnt = ((getBuyStack(ICraftUtils.items.get(i).keySet()).stackSize * (qnt + 1) <= 64 && getSellStack(ICraftUtils.items.get(i).values()).stackSize * (qnt + 1) <= 64) ? qnt + 1 : qnt);
                 break;
             case 3:
-                qnt = ((getBuyStack(ICraftUtils.items.get(i).keySet()).stackSize * (qnt - 1) >= 0 && getSellStack(ICraftUtils.items.get(i).values()).stackSize * (qnt - 1) >= 0) ? qnt - 1 : qnt);
+                qnt = (qnt - 1 > 0 ? qnt - 1 : qnt);
                 break;
-			case 4:
-				if (ICraft.isIBayActive)
-				{
-					NetworkHandler.sendToServer(new MessageCraftBay(getBuyStack(ICraftUtils.items.get(i).keySet()).getItem(), getBuyStack(ICraftUtils.items.get(i).keySet()).stackSize * qnt, getBuyStack(ICraftUtils.items.get(i).keySet()).getItemDamage(), getSellStack(ICraftUtils.items.get(i).values()).getItem(), getSellStack(ICraftUtils.items.get(i).values()).stackSize * qnt, getSellStack(ICraftUtils.items.get(i).values()).getItemDamage()));
-					mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + "[" + EnumChatFormatting.GOLD + "iCraft" + EnumChatFormatting.BLUE + "] " + EnumChatFormatting.GREEN + ICraftUtils.localize("msg.iCraft.iBay")));
-					mc.thePlayer.closeScreen();
-					break;
-				}
-		}
-	}
+            case 4:
+                if (ICraft.isIBayActive)
+                {
+                    NetworkHandler.sendToServer(new MessageCraftBay(getBuyStack(ICraftUtils.items.get(i).keySet()).getItem(), getBuyStack(ICraftUtils.items.get(i).keySet()).stackSize * qnt, getBuyStack(ICraftUtils.items.get(i).keySet()).getItemDamage(), getSellStack(ICraftUtils.items.get(i).values()).getItem(), getSellStack(ICraftUtils.items.get(i).values()).stackSize * qnt, getSellStack(ICraftUtils.items.get(i).values()).getItemDamage()));
+                    mc.thePlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + "[" + EnumChatFormatting.GOLD + "iCraft" + EnumChatFormatting.BLUE + "] " + EnumChatFormatting.GREEN + ICraftUtils.localize("msg.iCraft.iBay")));
+                    mc.thePlayer.closeScreen();
+                    break;
+                }
+        }
+    }
 
-	@Override
-	protected void mouseClicked(int x, int y, int button)
-	{
-		super.mouseClicked(x, y, button);
+    @Override
+    protected void mouseClicked(int x, int y, int button)
+    {
+        super.mouseClicked(x, y, button);
 
-		if (button == 0)
-		{
-			int xAxis = x - guiWidth;
-			int yAxis = y - guiHeight;
-			//Exit
-			if (xAxis >= 143 && xAxis <= 158 && yAxis >= 51 && yAxis <= 66)
-			{
-				mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-			}
-		}
-	}
+        if (button == 0)
+        {
+            int xAxis = x - guiWidth;
+            int yAxis = y - guiHeight;
+            //Exit
+            if (xAxis >= 143 && xAxis <= 158 && yAxis >= 51 && yAxis <= 66)
+                mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
+        }
+    }
 }

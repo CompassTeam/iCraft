@@ -1,62 +1,59 @@
 package iCraft.client.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.utils.ICraftClientUtils;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraftClock extends GuiiCraftBase
 {
-	private float scroll;
-	private boolean isDragging = false;
-	private boolean canScroll;
-	private int dragOffset = 0;
-	private List<String> list = new ArrayList<String>();
+    private float scroll;
+    private boolean isDragging = false;
+    private boolean canScroll;
+    private int dragOffset = 0;
+    private List<String> list = new ArrayList<String>();
 
-	public GuiiCraftClock(String resource)
-	{
-		super(resource);
-	}
+    public GuiiCraftClock(String resource)
+    {
+        super(resource);
+    }
 
-	@Override
-	public void initGui()
-	{
-		super.initGui();
-		canScroll = list.size() > 5;
-	}
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+        canScroll = list.size() > 5;
+    }
 
-	@Override
-	public void updateScreen()
-	{
-		super.updateScreen();
-		canScroll = list.size() > 5;
-	}
+    @Override
+    public void updateScreen()
+    {
+        super.updateScreen();
+        canScroll = list.size() > 5;
+    }
 
-	public int getScroll()
-	{
-		return Math.max(Math.min((int)(scroll * 55), 55), 0);
-	}
+    public int getScroll()
+    {
+        return Math.max(Math.min((int) (scroll * 55), 55), 0);
+    }
 
-	public int getIndex()
-	{ 
-		if(list.size() <= 5)
-		{
-			return 0;
-		}
+    public int getIndex()
+    {
+        if (list.size() <= 5)
+            return 0;
 
-		return (int)((list.size() * scroll) - ((5 / (float)list.size())) * scroll);
-	}
+        return (int) ((list.size() * scroll) - ((5 / (float) list.size())) * scroll);
+    }
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
-	{
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int mouseX, int mouseY)
+    {
         super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
 
         drawTexturedModalRect(guiWidth + 113, guiHeight + 67 + getScroll(), (canScroll ? 0 : 11), 180, 11, 15);
@@ -92,7 +89,7 @@ public class GuiiCraftClock extends GuiiCraftBase
         GL11.glPushMatrix();
         GL11.glScalef(1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glTranslatef((float)guiWidth, (float)guiHeight, 0.0F);
+        GL11.glTranslatef((float) guiWidth, (float) guiHeight, 0.0F);
         fontRendererObj.drawString(ICraftClientUtils.getTime(), 75, 46, 0xffffff);
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glPopMatrix();
@@ -100,76 +97,70 @@ public class GuiiCraftClock extends GuiiCraftBase
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
 
-	@Override
-	protected void mouseClicked(int x, int y, int button)
-	{
-		super.mouseClicked(x, y, button);
-		
-		if(button == 0)
-		{
-			int xAxis = x - guiWidth;
-			int yAxis = y - guiHeight;
-			//Exit
-			if(xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
-			{
-				mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
-			}
-			// Slider
-			if (xAxis >= 113 && xAxis <= 123 && yAxis >= getScroll() + 67 && yAxis <= getScroll() + 67 + 15)
-			{
-				if (canScroll)
-				{
-					dragOffset = yAxis - (getScroll() + 67);
-					isDragging = true;
-				}
-			}
-			// Change Time Format
-			if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
-			{
-				ICraftClientUtils.hour24 = !ICraftClientUtils.hour24;
-			}
-		}
-	}
+    @Override
+    protected void mouseClicked(int x, int y, int button)
+    {
+        super.mouseClicked(x, y, button);
 
-	@Override
-	protected void mouseClickMove(int mouseX, int mouseY, int button, long ticks)
-	{
-		super.mouseClickMove(mouseX, mouseY, button, ticks);
+        if (button == 0)
+        {
+            int xAxis = x - guiWidth;
+            int yAxis = y - guiHeight;
+            //Exit
+            if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
+                mc.thePlayer.openGui(ICraft.instance, 0, mc.theWorld, 0, 0, 0);
+            // Slider
+            if (xAxis >= 113 && xAxis <= 123 && yAxis >= getScroll() + 67 && yAxis <= getScroll() + 67 + 15)
+            {
+                if (canScroll)
+                {
+                    dragOffset = yAxis - (getScroll() + 67);
+                    isDragging = true;
+                }
+            }
+            // Change Time Format
+            if (xAxis >= 80 && xAxis <= 95 && yAxis >= 143 && yAxis <= 158)
+                ICraftClientUtils.hour24 = !ICraftClientUtils.hour24;
+        }
+    }
 
-		int yAxis = mouseY - guiHeight;
+    @Override
+    protected void mouseClickMove(int mouseX, int mouseY, int button, long ticks)
+    {
+        super.mouseClickMove(mouseX, mouseY, button, ticks);
 
-		if(isDragging)
-		{
-			scroll = Math.min(Math.max((float)(yAxis - 67 - dragOffset) / 55, 0), 1);
-		}
-	}
+        int yAxis = mouseY - guiHeight;
 
-	@Override
-	protected void mouseMovedOrUp(int x, int y, int type)
-	{
-		super.mouseMovedOrUp(x, y, type);
+        if (isDragging)
+            scroll = Math.min(Math.max((float) (yAxis - 67 - dragOffset) / 55, 0), 1);
+    }
 
-		if(type == 0 && isDragging)
-		{
-			dragOffset = 0;
-			isDragging = false;
-		}
-	}
+    @Override
+    protected void mouseMovedOrUp(int x, int y, int type)
+    {
+        super.mouseMovedOrUp(x, y, type);
 
-	@Override
-	public void handleMouseInput()
-	{
-		super.handleMouseInput();
+        if (type == 0 && isDragging)
+        {
+            dragOffset = 0;
+            isDragging = false;
+        }
+    }
 
-		int i = Mouse.getEventDWheel();
-		if (i != 0 && canScroll)
-		{
-			if (i > 0)
-				i = 1;
-			if (i < 0)
-				i = -1;
+    @Override
+    public void handleMouseInput()
+    {
+        super.handleMouseInput();
 
-			scroll = Math.min(Math.max((float)((double)scroll - (double)i / (double)20), 0), 1);
-		}
-	}
+        int i = Mouse.getEventDWheel();
+        if (i != 0 && canScroll)
+        {
+            if (i > 0)
+                i = 1;
+            if (i < 0)
+                i = -1;
+
+            scroll = Math.min(Math.max((float) ((double) scroll - (double) i / (double) 20), 0), 1);
+        }
+    }
 }
