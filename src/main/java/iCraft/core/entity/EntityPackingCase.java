@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -91,11 +92,11 @@ public class EntityPackingCase extends Entity
                     final int y = MathHelper.floor_double(this.posY);
                     final int z = MathHelper.floor_double(this.posZ);
 
-                    Block block = worldObj.getBlock(x, y + i, z);
+                    Block block = worldObj.getBlockState(new BlockPos(x, y + i, z)).getBlock();
 
                     if (block.getMaterial().isReplaceable())
                     {
-                        if (placeCase(x, y + i, z))
+                        if (placeCase(new BlockPos(x, y + i, z)))
                         {
                             setDead();
                             return;
@@ -129,12 +130,12 @@ public class EntityPackingCase extends Entity
         }
     }
 
-    private boolean placeCase(int x, int y, int z)
+    private boolean placeCase(BlockPos pos)
     {
-        worldObj.setBlock(x, y, z, ICraft.caseBlock, 0, 3);
-        worldObj.removeTileEntity(x, y, z);
+        worldObj.setBlockState(pos, ICraft.caseBlock.getDefaultState(), 3);
+        worldObj.removeTileEntity(pos);
         final TileEntity te = new TilePackingCase(profile, itemStack);
-        worldObj.setTileEntity(x, y, z, te);
+        worldObj.setTileEntity(pos, te);
 
         if (te instanceof TilePackingCase && storedItems != null)
         {

@@ -1,12 +1,10 @@
 package iCraft.core.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.tile.TilePackingCase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -16,6 +14,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -30,15 +30,11 @@ public class BlockPackingCase extends BlockContainer
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {}
-
-    @Override
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityliving, ItemStack itemstack)
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        TilePackingCase te = (TilePackingCase) world.getTileEntity(x, y, z);
-        int side = MathHelper.floor_double((entityliving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-        int height = Math.round(entityliving.rotationPitch);
+        TilePackingCase te = (TilePackingCase) world.getTileEntity(pos);
+        int side = MathHelper.floor_double((placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int height = Math.round(placer.rotationPitch);
         int change = 3;
 
         if (te == null)
@@ -74,16 +70,16 @@ public class BlockPackingCase extends BlockContainer
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float hitX, float hitY, float hiZ)
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote && !player.isSneaking())
         {
-            TilePackingCase te = (TilePackingCase) world.getTileEntity(x, y, z);
+            TilePackingCase te = (TilePackingCase) world.getTileEntity(pos);
             if (te != null)
             {
                 if (te.canOpen(player))
                 {
-                    world.playSoundEffect(x + 0.5F, y + 0.5D, z + 0.5F, "random.chestopen", 0.5F, (world.rand.nextFloat() * 0.1F) + 0.9F);
+                    world.playSoundEffect(pos.getX() + 0.5F, pos.getY() + 0.5D, pos.getZ() + 0.5F, "random.chestopen", 0.5F, (world.rand.nextFloat() * 0.1F) + 0.9F);
 
                     if (te.inventory[0] != null)
                     {
@@ -98,11 +94,11 @@ public class BlockPackingCase extends BlockContainer
                         else
                         {
                             EntityItem ent = new EntityItem(world, player.posX + 0.5F, player.posY + 0.5F, player.posZ + 0.5F, te.inventory[0]);
-                            world.setBlockToAir(x, y, z);
+                            world.setBlockToAir(pos);
                             world.spawnEntityInWorld(ent);
                         }
                     }
-                    world.setBlockToAir(x, y, z);
+                    world.setBlockToAir(pos);
                 }
             }
         }
@@ -116,12 +112,6 @@ public class BlockPackingCase extends BlockContainer
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-
-    @Override
     public boolean isOpaqueCube()
     {
         return false;
@@ -130,6 +120,6 @@ public class BlockPackingCase extends BlockContainer
     @Override
     public int getRenderType()
     {
-        return -1;
+        return 2;
     }
 }

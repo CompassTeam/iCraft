@@ -1,11 +1,11 @@
 package iCraft.core.voice;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import iCraft.core.ICraft;
 import iCraft.core.item.ItemiCraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -152,9 +152,9 @@ public class VoiceConnection extends Thread
         {
             if (itemStack != null && itemStack.getItem() instanceof ItemiCraft)
             {
-                if (itemStack.stackTagCompound != null && itemStack.stackTagCompound.hasKey("called") && itemStack.stackTagCompound.getInteger("called") == 2)
+                if (itemStack.getTagCompound() != null && itemStack.getTagCompound().hasKey("called") && itemStack.getTagCompound().getInteger("called") == 2)
                 {
-                    if (itemStack.stackTagCompound.hasKey("callCode") && itemStack.stackTagCompound.getInteger("callCode") == callCode) {
+                    if (itemStack.getTagCompound().hasKey("callCode") && itemStack.getTagCompound().getInteger("callCode") == callCode) {
                         return true;
                     }
                 }
@@ -169,9 +169,9 @@ public class VoiceConnection extends Thread
         {
             if (itemStack != null && itemStack.getItem() instanceof ItemiCraft)
             {
-                if (itemStack.stackTagCompound != null && itemStack.stackTagCompound.hasKey("number") && itemStack.stackTagCompound.hasKey("called") && itemStack.stackTagCompound.getInteger("called") == 2 && itemStack.stackTagCompound.hasKey("callCode"))
+                if (itemStack.getTagCompound() != null && itemStack.getTagCompound().hasKey("number") && itemStack.getTagCompound().hasKey("called") && itemStack.getTagCompound().getInteger("called") == 2 && itemStack.getTagCompound().hasKey("callCode"))
                 {
-                    return itemStack.stackTagCompound.getInteger("callCode");
+                    return itemStack.getTagCompound().getInteger("callCode");
                 }
             }
         }
@@ -180,6 +180,6 @@ public class VoiceConnection extends Thread
 
     public EntityPlayerMP getPlayer()
     {
-        return server.getConfigurationManager().func_152612_a(username);
+        return server.getConfigurationManager().getPlayerByUsername(username);
     }
 }

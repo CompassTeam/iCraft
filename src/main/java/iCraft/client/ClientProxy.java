@@ -1,12 +1,8 @@
 package iCraft.client;
 
 import com.google.common.io.Files;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import iCraft.client.gui.*;
 import iCraft.client.mp3.MP3Player;
-import iCraft.client.render.ItemRenderHandler;
 import iCraft.client.render.RenderFallingCase;
 import iCraft.client.render.RenderPackingCase;
 import iCraft.client.render.RenderPizzaDelivery;
@@ -18,10 +14,14 @@ import iCraft.core.tile.TilePackingCase;
 import iCraft.core.utils.ICraftClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.File;
 
@@ -45,7 +45,8 @@ public class ClientProxy extends CommonProxy
         {
             ICraft.voiceClient.start();
         }
-        if (ICraft.mp3Folder.listFiles().length != 0) {
+        if (ICraft.mp3Folder.listFiles().length != 0)
+        {
             for (File file : ICraft.mp3Folder.listFiles())
             {
                 if (!file.isDirectory() && Files.getFileExtension(file.getAbsolutePath()).equals("mp3"))
@@ -82,12 +83,15 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerRenders()
     {
+        ItemModelMesher itemModelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+
         // Blocks/Items
-        ItemRenderHandler handler = new ItemRenderHandler();
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ICraft.caseBlock), handler);
-        // Entities
-        RenderingRegistry.registerEntityRenderingHandler(EntityPackingCase.class, new RenderFallingCase());
-        RenderingRegistry.registerEntityRenderingHandler(EntityPizzaDelivery.class, new RenderPizzaDelivery());
+        itemModelMesher.register(ICraft.iCraft, 0, new ModelResourceLocation("icraft:iCraft", "inventory"));
+        itemModelMesher.register(ICraft.pizza, 0, new ModelResourceLocation("icraft:pizza", "inventory"));
+        itemModelMesher.register(Item.getItemFromBlock(ICraft.caseBlock), 0, new ModelResourceLocation("icraft:caseBlock", "inventory"));
+        // Entitiess
+        RenderingRegistry.registerEntityRenderingHandler(EntityPackingCase.class, new RenderFallingCase(Minecraft.getMinecraft().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityPizzaDelivery.class, new RenderPizzaDelivery(Minecraft.getMinecraft().getRenderManager()));
 
         ICraft.logger.info("Render registrations complete.");
     }

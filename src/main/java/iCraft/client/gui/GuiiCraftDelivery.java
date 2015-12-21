@@ -1,7 +1,5 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.network.MessageDelivery;
 import iCraft.core.network.NetworkHandler;
@@ -12,9 +10,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraftDelivery extends GuiiCraftBase
@@ -83,11 +85,11 @@ public class GuiiCraftDelivery extends GuiiCraftBase
         ItemStack iron = new ItemStack(Items.iron_ingot, (qnt * 2));
         ItemStack pizza = new ItemStack(ICraft.pizza, qnt);
 
-        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), iron, guiWidth + 53, guiHeight + 45);
-        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), iron, guiWidth + 53, guiHeight + 45);
+        itemRender.renderItemAndEffectIntoGUI(iron, guiWidth + 53, guiHeight + 45);
+        itemRender.renderItemOverlays(fontRendererObj, iron, guiWidth + 53, guiHeight + 45);
 
-        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), pizza, guiWidth + 107, guiHeight + 45);
-        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), pizza, guiWidth + 107, guiHeight + 45);
+        itemRender.renderItemAndEffectIntoGUI(pizza, guiWidth + 107, guiHeight + 45);
+        itemRender.renderItemOverlays(fontRendererObj, pizza, guiWidth + 107, guiHeight + 45);
 
         itemRender.zLevel = 0.0F;
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -111,7 +113,7 @@ public class GuiiCraftDelivery extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
 

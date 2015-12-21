@@ -1,7 +1,5 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.entity.EntityPizzaDelivery;
 import iCraft.core.inventory.container.ContainerPizzaDelivery;
@@ -13,6 +11,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -62,17 +62,17 @@ public class GuiPizzaDelivery extends GuiContainer
         ItemStack iron = new ItemStack(Items.iron_ingot, (delivery.getQuantity() * 2));
         ItemStack pizza = new ItemStack(ICraft.pizza, delivery.getQuantity());
 
-        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), iron, guiWidth + 62, guiHeight + 24);
-        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), iron, guiWidth + 62, guiHeight + 24);
+        itemRender.renderItemAndEffectIntoGUI(iron, guiWidth + 62, guiHeight + 24);
+        itemRender.renderItemOverlays(fontRendererObj, iron, guiWidth + 62, guiHeight + 24);
 
-        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), pizza, guiWidth + 120, guiHeight + 24);
-        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), pizza, guiWidth + 120, guiHeight + 24);
+        itemRender.renderItemAndEffectIntoGUI(pizza, guiWidth + 120, guiHeight + 24);
+        itemRender.renderItemOverlays(fontRendererObj, pizza, guiWidth + 120, guiHeight + 24);
 
         itemRender.zLevel = 0.0F;
         GL11.glDisable(GL11.GL_LIGHTING);
-        if (func_146978_c(62, 24, 16, 16, mouseX, mouseY))
+        if (isPointInRegion(62, 24, 16, 16, mouseX, mouseY))
             renderToolTip(iron, mouseX, mouseY);
-        else if (func_146978_c(120, 24, 16, 16, mouseX, mouseY))
+        else if (isPointInRegion(120, 24, 16, 16, mouseX, mouseY))
             renderToolTip(pizza, mouseX, mouseY);
 
         GL11.glPopMatrix();

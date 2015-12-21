@@ -13,7 +13,7 @@ public class RenderPackingCase extends TileEntitySpecialRenderer
     private ModelPackingCase model = new ModelPackingCase();
 
     @Override
-    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTick)
+    public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTick, int damage)
     {
         render((TilePackingCase) tileEntity, (float) x, (float) y, (float) z, partialTick);
     }

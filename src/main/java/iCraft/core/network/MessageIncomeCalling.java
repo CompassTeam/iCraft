@@ -54,32 +54,32 @@ public class MessageIncomeCalling extends MessageBase<MessageIncomeCalling>
         World world = player.worldObj;
 
         search:
-        for (EntityPlayerMP players : (List<EntityPlayerMP>) world.playerEntities)
+        for (EntityPlayer players : world.playerEntities)
         {
             if (players != player)
             {
                 List<ItemStack> itemStacks = Arrays.asList(players.inventory.mainInventory);
                 for (ItemStack itemStack : itemStacks)
                 {
-                    if (itemStack != null && itemStack.getItem() instanceof ItemiCraft && itemStack.stackTagCompound != null && itemStack.stackTagCompound.hasKey("number") && itemStack.stackTagCompound.getInteger("number") == message.calledNumber)
+                    if (itemStack != null && itemStack.getItem() instanceof ItemiCraft && itemStack.getTagCompound() != null && itemStack.getTagCompound().hasKey("number") && itemStack.getTagCompound().getInteger("number") == message.calledNumber)
                     {
-                        List<String> blackList = readNBT(itemStack.stackTagCompound);
-                        if (!blackList.contains(player.getCommandSenderName()) && (!itemStack.stackTagCompound.hasKey("called") || itemStack.stackTagCompound.getInteger("called") == 0))
+                        List<String> blackList = readNBT(itemStack.getTagCompound());
+                        if (!blackList.contains(player.getCommandSenderName()) && (!itemStack.getTagCompound().hasKey("called") || itemStack.getTagCompound().getInteger("called") == 0))
                         {
-                            itemStack.stackTagCompound.setInteger("called", 1);
-                            itemStack.stackTagCompound.setInteger("callingNumber", message.number);
-                            itemStack.stackTagCompound.setString("callingPlayer", player.getCommandSenderName());
-                            itemStack.stackTagCompound.setBoolean("isCalling", false);
+                            itemStack.getTagCompound().setInteger("called", 1);
+                            itemStack.getTagCompound().setInteger("callingNumber", message.number);
+                            itemStack.getTagCompound().setString("callingPlayer", player.getCommandSenderName());
+                            itemStack.getTagCompound().setBoolean("isCalling", false);
 
                             List<ItemStack> stacks = Arrays.asList(player.inventory.mainInventory);
                             for (ItemStack stack : stacks)
                             {
-                                if (stack != null && stack.getItem() instanceof ItemiCraft && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("number") && stack.stackTagCompound.getInteger("number") == message.number)
+                                if (stack != null && stack.getItem() instanceof ItemiCraft && stack.getTagCompound() != null && stack.getTagCompound().hasKey("number") && stack.getTagCompound().getInteger("number") == message.number)
                                 {
-                                    stack.stackTagCompound.setInteger("called", 1);
-                                    stack.stackTagCompound.setInteger("calledNumber", itemStack.stackTagCompound.getInteger("number"));
-                                    stack.stackTagCompound.setString("calledPlayer", players.getCommandSenderName());
-                                    stack.stackTagCompound.setBoolean("isCalling", true);
+                                    stack.getTagCompound().setInteger("called", 1);
+                                    stack.getTagCompound().setInteger("calledNumber", itemStack.getTagCompound().getInteger("number"));
+                                    stack.getTagCompound().setString("calledPlayer", players.getCommandSenderName());
+                                    stack.getTagCompound().setBoolean("isCalling", true);
                                     NetworkHandler.sendTo(this, (EntityPlayerMP) player);
                                     break search;
                                 }

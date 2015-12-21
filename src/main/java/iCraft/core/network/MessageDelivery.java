@@ -35,7 +35,7 @@ public class MessageDelivery extends MessageBase<MessageDelivery>
     public void handleServerSide(MessageDelivery message, EntityPlayer player)
     {
         World world = player.worldObj;
-        EntityPizzaDelivery pizza = new EntityPizzaDelivery(world, player.posX + 20, player.posY, player.posZ + 20);
+        EntityPizzaDelivery pizza = new EntityPizzaDelivery(world, player.posX + 40, player.posY, player.posZ + 40);
         pizza.setPlayer(player.getCommandSenderName());
         pizza.setQuantity(message.qnt);
         world.spawnEntityInWorld(pizza);

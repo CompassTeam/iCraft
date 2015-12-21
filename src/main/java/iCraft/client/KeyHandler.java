@@ -1,6 +1,5 @@
 package iCraft.client;
 
-import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -30,7 +29,7 @@ public abstract class KeyHandler
      * Register the keys into the system. You will do your own keyboard
      * management elsewhere. No events will fire if you use this method
      *
-     * @param bindings
+     * @param  bindings
      */
     public KeyHandler(KeyBinding[] bindings)
     {
@@ -38,56 +37,37 @@ public abstract class KeyHandler
         isDummy = true;
     }
 
-    public static boolean getIsKeyPressed(KeyBinding keyBinding)
+    public static boolean isPressed(KeyBinding keyBinding)
     {
         int keyCode = keyBinding.getKeyCode();
         return keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode);
     }
 
-    public KeyBinding[] getKeyBindings()
+    public KeyBinding[] getKeyBindings ()
     {
         return keyBindings;
     }
 
-    public void keyTick(Type type, boolean tickEnd)
+    public void keyTick()
     {
-        for (int i = 0; i < keyBindings.length; i++)
+        for(int i = 0; i < keyBindings.length; i++)
         {
             KeyBinding keyBinding = keyBindings[i];
-            int keyCode = keyBinding.getKeyCode();
-            boolean state = (keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode));
+            boolean state = keyBinding.isPressed();
 
-            if (state != keyDown[i] || (state && repeatings[i]))
+            if(state != keyDown[i] || (state && repeatings[i]))
             {
-                if (state)
-                    keyDown(type, keyBinding, tickEnd, state != keyDown[i]);
+                if(state)
+                    keyDown(keyBinding, state == keyDown[i]);
                 else
-                    keyUp(type, keyBinding, tickEnd);
+                    keyUp(keyBinding);
 
-                if (tickEnd)
-                    keyDown[i] = state;
+                keyDown[i] = state;
             }
         }
     }
 
-    /**
-     * Called when the key is first in the down position on any tick from the
-     * {@link #ticks()} set. Will be called subsequently with isRepeat set to
-     * true
-     *
-     * @param types    the type(s) of tick that fired when this key was first down
-     * @param tickEnd  was it an end or start tick which fired the key
-     * @param isRepeat is it a repeat key event
-     * @see #keyUp(EnumSet, KeyBinding, boolean)
-     */
-    public abstract void keyDown(Type types, KeyBinding kb, boolean tickEnd, boolean isRepeat);
+    public abstract void keyDown(KeyBinding kb, boolean isRepeat);
 
-    /**
-     * Fired once when the key changes state from down to up
-     *
-     * @param types   the type(s) of tick that fired when this key was first down
-     * @param tickEnd was it an end or start tick which fired the key
-     * @see #keyDown(EnumSet, KeyBinding, boolean, boolean)
-     */
-    public abstract void keyUp(Type types, KeyBinding kb, boolean tickEnd);
+    public abstract void keyUp(KeyBinding kb);
 }

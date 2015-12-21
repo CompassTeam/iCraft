@@ -1,9 +1,9 @@
 package iCraft.core.network;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import iCraft.core.ICraft;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class MessageConfigSync extends MessageBase<MessageConfigSync>
 {

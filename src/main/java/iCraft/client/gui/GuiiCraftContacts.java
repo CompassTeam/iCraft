@@ -8,11 +8,15 @@ import iCraft.core.utils.ICraftUtils;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiiCraftContacts extends GuiiCraftBase
 {
     private boolean isInEditMode = false;
@@ -32,10 +36,10 @@ public class GuiiCraftContacts extends GuiiCraftBase
     public void initGui()
     {
         super.initGui();
-        textField = new GuiTextField(fontRendererObj, guiWidth + 52, guiHeight + 54, 72, 10);
+        textField = new GuiTextField(0, fontRendererObj, guiWidth + 52, guiHeight + 54, 72, 10);
         textField.setMaxStringLength(8);
         textField.setFocused(false);
-        list = (mc.thePlayer.getCurrentEquippedItem().stackTagCompound != null ? readNBT(mc.thePlayer.getCurrentEquippedItem().stackTagCompound) : list);
+        list = (mc.thePlayer.getCurrentEquippedItem().getTagCompound() != null ? readNBT(mc.thePlayer.getCurrentEquippedItem().getTagCompound()) : list);
         canScroll = list.size() > 5;
     }
 
@@ -44,7 +48,7 @@ public class GuiiCraftContacts extends GuiiCraftBase
     {
         super.updateScreen();
         textField.updateCursorCounter();
-        list = (mc.thePlayer.getCurrentEquippedItem().stackTagCompound != null ? readNBT(mc.thePlayer.getCurrentEquippedItem().stackTagCompound) : list);
+        list = (mc.thePlayer.getCurrentEquippedItem().getTagCompound() != null ? readNBT(mc.thePlayer.getCurrentEquippedItem().getTagCompound()) : list);
         canScroll = list.size() > 5;
     }
 
@@ -112,7 +116,7 @@ public class GuiiCraftContacts extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
         textField.mouseClicked(x, y, button);
@@ -146,7 +150,7 @@ public class GuiiCraftContacts extends GuiiCraftBase
                     if (xAxis >= 52 && xAxis <= 111 && yAxis >= yStart && yAxis <= yStart + 14)
                     {
                         if (!isInEditMode)
-                            NetworkHandler.sendToServer(new MessageIncomeCalling(mc.thePlayer.getCurrentEquippedItem().stackTagCompound.getInteger("number"), list.get(getIndex() + i)));
+                            NetworkHandler.sendToServer(new MessageIncomeCalling(mc.thePlayer.getCurrentEquippedItem().getTagCompound().getInteger("number"), list.get(getIndex() + i)));
                         else
                             NetworkHandler.sendToServer(new MessageContacts(1, list.get(getIndex() + i)));
                     }
@@ -167,9 +171,9 @@ public class GuiiCraftContacts extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseMovedOrUp(int x, int y, int type)
+    protected void mouseReleased(int x, int y, int type)
     {
-        super.mouseMovedOrUp(x, y, type);
+        super.mouseReleased(x, y, type);
 
         if (type == 0 && isDragging)
         {
@@ -179,7 +183,7 @@ public class GuiiCraftContacts extends GuiiCraftBase
     }
 
     @Override
-    public void handleMouseInput()
+    public void handleMouseInput() throws IOException
     {
         super.handleMouseInput();
 
@@ -196,7 +200,7 @@ public class GuiiCraftContacts extends GuiiCraftBase
     }
 
     @Override
-    protected void keyTyped(char ch, int keyCode)
+    protected void keyTyped(char ch, int keyCode) throws IOException
     {
         textField.textboxKeyTyped(ch, keyCode);
         if (textField.isFocused() && keyCode != 1)

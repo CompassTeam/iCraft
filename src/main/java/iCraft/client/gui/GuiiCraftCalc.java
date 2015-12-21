@@ -1,16 +1,16 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraftCalc extends GuiiCraftBase
 {
 	private String exNum1 = "";
 	private String exNum2 = "";
-	private float num1;
-	private float num2;
 	private static int operation = 0;
 
 	public boolean equalsPressed = false;
@@ -31,8 +31,8 @@ public class GuiiCraftCalc extends GuiiCraftBase
 
 	public String getResult()
 	{
-		num1 = Float.parseFloat(exNum1);
-		num2 = Float.parseFloat(exNum2);
+		float num1 = Float.parseFloat(exNum1);
+		float num2 = Float.parseFloat(exNum2);
 		float result;
 		switch (operation)
 		{
@@ -78,7 +78,7 @@ public class GuiiCraftCalc extends GuiiCraftBase
 	}
 
 	@Override
-	protected void mouseClicked(int x, int y, int button)
+	protected void mouseClicked(int x, int y, int button) throws IOException
 	{
 		super.mouseClicked(x, y, button);
 

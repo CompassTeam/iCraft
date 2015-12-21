@@ -5,9 +5,14 @@ import iCraft.core.utils.ICraftClientUtils.ResourceType;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import java.io.IOException;
+
+@SideOnly(Side.CLIENT)
 public class GuiiCraftBase extends GuiScreen
 {
 	private String resource;
@@ -89,7 +94,7 @@ public class GuiiCraftBase extends GuiScreen
     }
 
 	@Override
-	protected void keyTyped(char ch, int keyCode)
+	protected void keyTyped(char ch, int keyCode) throws IOException
     {
 		super.keyTyped(ch, keyCode);
 		if (keyCode == mc.gameSettings.keyBindInventory.getKeyCode())

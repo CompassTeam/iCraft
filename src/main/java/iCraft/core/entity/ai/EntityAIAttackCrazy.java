@@ -73,14 +73,14 @@ public class EntityAIAttackCrazy extends EntityAIBase
     {
         EntityLivingBase target = theWorld.getPlayerEntityByName(attacker.getPlayer());
         attacker.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
-        double d0 = attacker.getDistanceSq(target.posX, target.boundingBox.minY, target.posZ);
+        double d0 = attacker.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
         double d1 = (double) (attacker.width * 2.0F * attacker.width * 2.0F + target.width);
         --ticker;
 
         if (attacker.getEntitySenses().canSee(target) && ticker <= 0 && (field_151497_i == 0.0D && field_151495_j == 0.0D && field_151496_k == 0.0D || target.getDistanceSq(field_151497_i, field_151495_j, field_151496_k) >= 1.0D || attacker.getRNG().nextFloat() < 0.05F))
         {
             field_151497_i = target.posX;
-            field_151495_j = target.boundingBox.minY;
+            field_151495_j = target.getEntityBoundingBox().minY;
             field_151496_k = target.posZ;
             ticker = failedPathFindingPenalty + 4 + attacker.getRNG().nextInt(7);
 

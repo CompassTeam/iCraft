@@ -45,31 +45,31 @@ public class ItemiCraft extends ItemBase
 
     public void setNumber(ItemStack itemStack)
     {
-        if (itemStack.stackTagCompound == null)
+        if (itemStack.getTagCompound() == null)
             itemStack.setTagCompound(new NBTTagCompound());
 
         int number = 10000000 + rand.nextInt(90000000);
-        itemStack.stackTagCompound.setInteger("number", number);
+        itemStack.getTagCompound().setInteger("number", number);
     }
 
     public int getNumber(ItemStack itemStack)
     {
-        if (itemStack.stackTagCompound == null)
+        if (itemStack.getTagCompound() == null)
             return 0;
 
-        return itemStack.stackTagCompound.getInteger("number");
+        return itemStack.getTagCompound().getInteger("number");
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer entityPlayer)
     {
-        if (itemStack.stackTagCompound != null)
+        if (itemStack.getTagCompound() != null)
         {
-            if (!itemStack.stackTagCompound.hasKey("called") || itemStack.stackTagCompound.getInteger("called") == 0)
+            if (!itemStack.getTagCompound().hasKey("called") || itemStack.getTagCompound().getInteger("called") == 0)
                 entityPlayer.openGui(ICraft.instance, 0, world, 0, 0, 0);
-            else if (itemStack.stackTagCompound.getInteger("called") == 1)
+            else if (itemStack.getTagCompound().getInteger("called") == 1)
                 entityPlayer.openGui(ICraft.instance, 6, world, 0, 0, 0);
-            else if (itemStack.stackTagCompound.getInteger("called") == 2)
+            else if (itemStack.getTagCompound().getInteger("called") == 2)
                 entityPlayer.openGui(ICraft.instance, 7, world, 0, 0, 0);
         }
 
@@ -79,6 +79,6 @@ public class ItemiCraft extends ItemBase
     @Override
     public EnumRarity getRarity(ItemStack itemStack)
     {
-        return EnumRarity.epic;
+        return EnumRarity.EPIC;
     }
 }

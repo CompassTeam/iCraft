@@ -30,7 +30,7 @@ public class EntityAIDelivery extends EntityAIBase
 
         if (player == null)
             return false;
-        else if (theEntity.worldObj.provider.dimensionId != player.worldObj.provider.dimensionId)
+        else if (theEntity.worldObj.provider.getDimensionId() != player.worldObj.provider.getDimensionId())
             return false;
         else if (theEntity.getDistanceSqToEntity(player) > (minDist * minDist))
             return false;
@@ -46,7 +46,7 @@ public class EntityAIDelivery extends EntityAIBase
     @Override
     public boolean continueExecuting()
     {
-        return !theEntity.getAngry() && theEntity.getDistanceSqToEntity(player) <= (minDist * minDist) && player.worldObj.provider.dimensionId == theEntity.worldObj.provider.dimensionId;
+        return !theEntity.getAngry() && theEntity.getDistanceSqToEntity(player) <= (minDist * minDist) && player.worldObj.provider.getDimensionId() == theEntity.worldObj.provider.getDimensionId();
     }
 
     @Override

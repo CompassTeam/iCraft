@@ -15,7 +15,7 @@ public class ContainerPizzaDelivery extends ContainerBase
     public ContainerPizzaDelivery(InventoryPlayer inventory, EntityPizzaDelivery delivery)
     {
         this.delivery = delivery;
-        this.delivery.openInventory();
+        this.delivery.openInventory(inventory.player);
 
         addSlotToContainer(new Slot(this.delivery, 0, 62, 53));
         addSlotToContainer(new SlotDelivery(this.delivery, 1, 120, 53));
@@ -80,6 +80,6 @@ public class ContainerPizzaDelivery extends ContainerBase
     public void onContainerClosed(EntityPlayer player)
     {
         super.onContainerClosed(player);
-        delivery.closeInventory();
+        delivery.closeInventory(player);
     }
 }

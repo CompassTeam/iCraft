@@ -1,7 +1,5 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.network.MessageCraftBay;
 import iCraft.core.network.NetworkHandler;
@@ -12,10 +10,13 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import java.io.IOException;
 import java.util.Collection;
 
 @SideOnly(Side.CLIENT)
@@ -85,10 +86,11 @@ public class GuiiCraftShopping extends GuiiCraftBase
         ItemStack buyItem = new ItemStack(getBuyStack(ICraftUtils.items.get(i).keySet()).getItem(), getBuyStack(ICraftUtils.items.get(i).keySet()).stackSize * qnt, getBuyStack(ICraftUtils.items.get(i).keySet()).getItemDamage());
         ItemStack sellItem = new ItemStack(getSellStack(ICraftUtils.items.get(i).values()).getItem(), getSellStack(ICraftUtils.items.get(i).values()).stackSize * qnt, getSellStack(ICraftUtils.items.get(i).values()).getItemDamage());
 
-        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), buyItem, guiWidth + 98, guiHeight + 51);
-        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), buyItem, guiWidth + 98, guiHeight + 51);
-        itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), sellItem, guiWidth + 48, guiHeight + 51);
-        itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), sellItem, guiWidth + 48, guiHeight + 51);
+        itemRender.renderItemAndEffectIntoGUI(buyItem, guiWidth + 98, guiHeight + 51);
+        itemRender.renderItemOverlays(fontRendererObj, buyItem, guiWidth + 98, guiHeight + 51);
+
+        itemRender.renderItemAndEffectIntoGUI(sellItem, guiWidth + 48, guiHeight + 51);
+        itemRender.renderItemOverlays(fontRendererObj, sellItem, guiWidth + 48, guiHeight + 51);
 
         itemRender.zLevel = 0.0F;
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -144,7 +146,7 @@ public class GuiiCraftShopping extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
 

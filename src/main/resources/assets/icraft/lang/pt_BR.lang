@@ -5,7 +5,7 @@
 //Configuration GUI
 iCraft.configgui.title=Configuração iCraft
 //Blocks
-tile.CaseBlock.name=Caixote
+tile.caseBlock.name=Caixote
 //Items
 item.iCraft.name=iCraft
 item.pizza.name=Pizza

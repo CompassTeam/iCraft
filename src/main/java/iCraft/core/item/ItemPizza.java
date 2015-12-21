@@ -1,6 +1,5 @@
 package iCraft.core.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemFood;
 
@@ -10,11 +9,5 @@ public class ItemPizza extends ItemFood
     {
         super(8, false);
         setCreativeTab(CreativeTabs.tabFood);
-    }
-
-    @Override
-    public void registerIcons(IIconRegister register)
-    {
-        itemIcon = register.registerIcon("icraft:" + getUnlocalizedName().replace("item.", ""));
     }
 }

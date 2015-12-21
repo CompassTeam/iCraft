@@ -1,13 +1,13 @@
 package iCraft.core.utils;
 
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.common.FMLCommonHandler;
 import iCraft.core.ICraft;
 import iCraft.core.item.ItemiCraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -35,22 +35,22 @@ public class ICraftUtils
 
     public static void changeCalledStatus(ItemStack itemStack, int status, int status2, boolean isCalling)
     {
-        if (itemStack != null && itemStack.stackTagCompound != null)
+        if (itemStack != null && itemStack.getTagCompound() != null)
         {
-            itemStack.stackTagCompound.setInteger("called", status);
+            itemStack.getTagCompound().setInteger("called", status);
             if (status == 2)
-                itemStack.stackTagCompound.setInteger("callCode", itemStack.stackTagCompound.getInteger("number"));
+                itemStack.getTagCompound().setInteger("callCode", itemStack.getTagCompound().getInteger("number"));
             else if (status == 0)
             {
-                itemStack.stackTagCompound.setInteger("callCode", 0);
-                if (itemStack.stackTagCompound.hasKey("isCalling"))
-                    itemStack.stackTagCompound.setBoolean("isCalling", false);
+                itemStack.getTagCompound().setInteger("callCode", 0);
+                if (itemStack.getTagCompound().hasKey("isCalling"))
+                    itemStack.getTagCompound().setBoolean("isCalling", false);
             }
 
             search:
             for (EntityPlayerMP players : (List<EntityPlayerMP>) FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList)
             {
-                if (players.getCommandSenderName().equals((isCalling ? itemStack.stackTagCompound.getString("calledPlayer") : itemStack.stackTagCompound.getString("callingPlayer"))))
+                if (players.getCommandSenderName().equals((isCalling ? itemStack.getTagCompound().getString("calledPlayer") : itemStack.getTagCompound().getString("callingPlayer"))))
                 {
                     List<ItemStack> stacks = Arrays.asList(players.inventory.mainInventory);
                     for (ItemStack stack : stacks)
@@ -58,16 +58,16 @@ public class ICraftUtils
                         if (stack != null && stack.getItem() instanceof ItemiCraft)
                         {
                             ItemiCraft iCraft = (ItemiCraft) stack.getItem();
-                            if (stack.stackTagCompound != null && iCraft.getNumber(stack) == (isCalling ? itemStack.stackTagCompound.getInteger("calledNumber") : itemStack.stackTagCompound.getInteger("callingNumber")))
+                            if (stack.getTagCompound() != null && iCraft.getNumber(stack) == (isCalling ? itemStack.getTagCompound().getInteger("calledNumber") : itemStack.getTagCompound().getInteger("callingNumber")))
                             {
-                                stack.stackTagCompound.setInteger("called", status2);
+                                stack.getTagCompound().setInteger("called", status2);
                                 if (status2 == 2)
-                                    stack.stackTagCompound.setInteger("callCode", itemStack.stackTagCompound.getInteger("number"));
+                                    stack.getTagCompound().setInteger("callCode", itemStack.getTagCompound().getInteger("number"));
                                 else if (status2 == 0)
                                 {
-                                    stack.stackTagCompound.setInteger("callCode", 0);
-                                    if (stack.stackTagCompound.hasKey("isCalling"))
-                                        stack.stackTagCompound.setBoolean("isCalling", false);
+                                    stack.getTagCompound().setInteger("callCode", 0);
+                                    if (stack.getTagCompound().hasKey("isCalling"))
+                                        stack.getTagCompound().setBoolean("isCalling", false);
                                 }
                                 break search;
                             }

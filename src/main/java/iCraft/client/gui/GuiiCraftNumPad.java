@@ -1,10 +1,12 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.network.MessageIncomeCalling;
 import iCraft.core.network.NetworkHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraftNumPad extends GuiiCraftBase
@@ -26,7 +28,7 @@ public class GuiiCraftNumPad extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
 
@@ -83,7 +85,7 @@ public class GuiiCraftNumPad extends GuiiCraftBase
             if (xAxis >= 61 && xAxis <= 85 && yAxis >= 124 && yAxis <= 134)
             {
                 if (callNumber.length() == 8)
-                    NetworkHandler.sendToServer(new MessageIncomeCalling(mc.thePlayer.getCurrentEquippedItem().stackTagCompound.getInteger("number"), Integer.parseInt(callNumber)));
+                    NetworkHandler.sendToServer(new MessageIncomeCalling(mc.thePlayer.getCurrentEquippedItem().getTagCompound().getInteger("number"), Integer.parseInt(callNumber)));
             }
         }
     }

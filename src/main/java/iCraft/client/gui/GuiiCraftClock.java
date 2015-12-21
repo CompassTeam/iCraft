@@ -1,12 +1,13 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.utils.ICraftClientUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class GuiiCraftClock extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
 
@@ -136,9 +137,9 @@ public class GuiiCraftClock extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseMovedOrUp(int x, int y, int type)
+    protected void mouseReleased(int x, int y, int type)
     {
-        super.mouseMovedOrUp(x, y, type);
+        super.mouseReleased(x, y, type);
 
         if (type == 0 && isDragging)
         {
@@ -148,7 +149,7 @@ public class GuiiCraftClock extends GuiiCraftBase
     }
 
     @Override
-    public void handleMouseInput()
+    public void handleMouseInput() throws IOException
     {
         super.handleMouseInput();
 

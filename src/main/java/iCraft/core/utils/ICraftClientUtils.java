@@ -1,6 +1,5 @@
 package iCraft.core.utils;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import iCraft.core.ICraft;
 import iCraft.core.item.ItemiCraft;
 import net.minecraft.client.Minecraft;
@@ -11,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 import javax.sound.sampled.AudioFileFormat;
@@ -49,8 +49,8 @@ public class ICraftClientUtils
         List<ItemStack> itemStacks = Arrays.asList(mc.thePlayer.inventory.mainInventory);
         for (ItemStack itemStack : itemStacks)
         {
-            if (itemStack != null && itemStack.getItem() instanceof ItemiCraft && itemStack.stackTagCompound != null)
-                return (isCalling ? clientWorld.getPlayerEntityByName(itemStack.stackTagCompound.getString("calledPlayer")) : (EntityLivingBase) clientWorld.getPlayerEntityByName(itemStack.stackTagCompound.getString("callingPlayer")));
+            if (itemStack != null && itemStack.getItem() instanceof ItemiCraft && itemStack.getTagCompound() != null)
+                return (isCalling ? clientWorld.getPlayerEntityByName(itemStack.getTagCompound().getString("calledPlayer")) : (EntityLivingBase) clientWorld.getPlayerEntityByName(itemStack.getTagCompound().getString("callingPlayer")));
         }
         return null;
     }
@@ -60,8 +60,8 @@ public class ICraftClientUtils
         List<ItemStack> itemStacks = Arrays.asList(mc.thePlayer.inventory.mainInventory);
         for (ItemStack itemStack : itemStacks)
         {
-            if (itemStack != null && itemStack.getItem() instanceof ItemiCraft && itemStack.stackTagCompound != null)
-                return (isCalling ? itemStack.stackTagCompound.getInteger("calledNumber") : itemStack.stackTagCompound.getInteger("callingNumber"));
+            if (itemStack != null && itemStack.getItem() instanceof ItemiCraft && itemStack.getTagCompound() != null)
+                return (isCalling ? itemStack.getTagCompound().getInteger("calledNumber") : itemStack.getTagCompound().getInteger("callingNumber"));
         }
         return 0;
     }
@@ -72,7 +72,7 @@ public class ICraftClientUtils
         SOUND("sounds"),
         TEXTURE_BLOCKS("textures/blocks"),
         TEXTURE_ITEMS("textures/items"),
-        RENDER("textures/render");
+        RENDER("render");
 
         private String prefix;
 

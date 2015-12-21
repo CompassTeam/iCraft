@@ -1,16 +1,17 @@
 package iCraft.client.gui;
 
 import com.google.common.io.Files;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.utils.ICraftClientUtils;
 import iCraft.core.utils.ICraftUtils;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -95,7 +96,7 @@ public class GuiiCraftMP3Player extends GuiiCraftBase
 
                 if (isMouseOver(52, (i * 14 + 50), 60, 14, mouseX, mouseY))
                 {
-                    List<String> tooltip = new ArrayList<>();
+                    List<String> tooltip = new ArrayList<String>();
                     tooltip.add(ICraft.musicNames.get(getIndex() + i));
                     tooltip.add(ICraftClientUtils.getAuthor(ICraft.musics.get(getIndex() + i)));
 
@@ -106,7 +107,7 @@ public class GuiiCraftMP3Player extends GuiiCraftBase
 
         if (isMouseOver(63, 41, 5, 7, mouseX, mouseY))
         {
-            List<String> tooltip = new ArrayList<>();
+            List<String> tooltip = new ArrayList<String>();
             tooltip.add(ICraftUtils.localize("mp3.reload"));
             drawHoveringText(tooltip, mouseX, mouseY, fontRendererObj);
         }
@@ -134,7 +135,7 @@ public class GuiiCraftMP3Player extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
 
@@ -254,9 +255,9 @@ public class GuiiCraftMP3Player extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseMovedOrUp(int x, int y, int type)
+    protected void mouseReleased(int x, int y, int type)
     {
-        super.mouseMovedOrUp(x, y, type);
+        super.mouseReleased(x, y, type);
 
         if (type == 0 && isDragging)
         {
@@ -266,7 +267,7 @@ public class GuiiCraftMP3Player extends GuiiCraftBase
     }
 
     @Override
-    public void handleMouseInput()
+    public void handleMouseInput() throws IOException
     {
         super.handleMouseInput();
 

@@ -1,20 +1,21 @@
 package iCraft.client.render;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.client.model.ModelPizzaDelivery;
 import iCraft.core.utils.ICraftClientUtils;
 import iCraft.core.utils.ICraftClientUtils.ResourceType;
 import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderPizzaDelivery extends RenderLiving
 {
-    public RenderPizzaDelivery()
+    public RenderPizzaDelivery(RenderManager renderManager)
     {
-        super(new ModelPizzaDelivery(), 0.5F);
+        super(renderManager, new ModelPizzaDelivery(), 0.5F);
     }
 
     @Override

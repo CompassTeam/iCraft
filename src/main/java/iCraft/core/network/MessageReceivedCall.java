@@ -42,7 +42,7 @@ public class MessageReceivedCall extends MessageBase<MessageReceivedCall>
         player.openGui(ICraft.instance, message.status, player.worldObj, 0, 0, 0);
 
         ItemStack itemStack = player.getCurrentEquippedItem();
-        if (itemStack.stackTagCompound != null && itemStack.stackTagCompound.hasKey("isCalling") && !itemStack.stackTagCompound.getBoolean("isCalling"))
+        if (itemStack.getTagCompound() != null && itemStack.getTagCompound().hasKey("isCalling") && !itemStack.getTagCompound().getBoolean("isCalling"))
             ICraft.proxy.stopPhoneRingSound();
     }
 
@@ -68,6 +68,6 @@ public class MessageReceivedCall extends MessageBase<MessageReceivedCall>
 
     private void updateGui(ItemStack itemStack, int status, boolean isCalling, World world)
     {
-        NetworkHandler.sendTo(new MessageReceivedCall(status, isCalling), (EntityPlayerMP) world.getPlayerEntityByName(isCalling ? itemStack.stackTagCompound.getString("calledPlayer") : itemStack.stackTagCompound.getString("callingPlayer")));
+        NetworkHandler.sendTo(new MessageReceivedCall(status, isCalling), (EntityPlayerMP) world.getPlayerEntityByName(isCalling ? itemStack.getTagCompound().getString("calledPlayer") : itemStack.getTagCompound().getString("callingPlayer")));
     }
 }

@@ -1,7 +1,7 @@
 package iCraft.core.coremod;
 
-import cpw.mods.fml.common.versioning.ComparableVersion;
 import net.minecraft.launchwrapper.LaunchClassLoader;
+import net.minecraftforge.fml.common.versioning.ComparableVersion;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.mutable.MutableObject;

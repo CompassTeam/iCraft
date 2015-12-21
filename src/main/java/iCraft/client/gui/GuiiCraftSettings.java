@@ -2,7 +2,12 @@ package iCraft.client.gui;
 
 import iCraft.core.ICraft;
 import iCraft.core.utils.ICraftUtils;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.IOException;
+
+@SideOnly(Side.CLIENT)
 public class GuiiCraftSettings extends GuiiCraftBase
 {
     public GuiiCraftSettings(String resource)
@@ -35,7 +40,7 @@ public class GuiiCraftSettings extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
 

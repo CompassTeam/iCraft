@@ -41,14 +41,12 @@ public class MessageContacts extends MessageBase<MessageContacts>
     }
 
     @Override
-    public void handleClientSide(MessageContacts message, EntityPlayer player)
-    {
-    }
+    public void handleClientSide(MessageContacts message, EntityPlayer player) {}
 
     @Override
     public void handleServerSide(MessageContacts message, EntityPlayer player)
     {
-        NBTTagCompound nbtTags = player.getCurrentEquippedItem().stackTagCompound;
+        NBTTagCompound nbtTags = player.getCurrentEquippedItem().getTagCompound();
         switch (message.status)
         {
             case 0:

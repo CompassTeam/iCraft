@@ -1,15 +1,16 @@
 package iCraft.client.render;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.client.model.ModelFallingCase;
 import iCraft.core.entity.EntityPackingCase;
 import iCraft.core.utils.ICraftClientUtils;
 import iCraft.core.utils.ICraftClientUtils.ResourceType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -18,6 +19,11 @@ public class RenderFallingCase extends Render
     private Minecraft mc = Minecraft.getMinecraft();
 
     public ModelFallingCase model = new ModelFallingCase();
+
+    public RenderFallingCase(RenderManager renderManager)
+    {
+        super(renderManager);
+    }
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity)

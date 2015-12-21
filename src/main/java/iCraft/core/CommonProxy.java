@@ -1,7 +1,5 @@
 package iCraft.core;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.FMLInjectionData;
 import iCraft.core.entity.EntityPizzaDelivery;
 import iCraft.core.inventory.container.ContainerPizzaDelivery;
 import iCraft.core.tile.TilePackingCase;
@@ -13,6 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
 import java.io.File;
 

@@ -1,0 +1,12 @@
+{
+  "parent": "icraft:block/caseBlock",
+  "display":
+  {
+    "thirdperson":
+    {
+      "rotation": [ 10, -45, 170 ],
+      "translation": [ 0, 1.5, -2.75 ],
+      "scale": [ 1.2, 1.2, 1.2 ]
+    }
+  }
+}

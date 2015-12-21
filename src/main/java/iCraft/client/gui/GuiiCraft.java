@@ -1,12 +1,14 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.client.InternetHandler;
 import iCraft.core.ICraft;
 import iCraft.core.utils.ICraftUtils;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraft extends GuiiCraftBase
@@ -53,7 +55,7 @@ public class GuiiCraft extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button)  throws IOException
     {
         super.mouseClicked(x, y, button);
 
@@ -65,7 +67,8 @@ public class GuiiCraft extends GuiiCraftBase
             if (xAxis >= 51 && xAxis <= 67 && yAxis >= 38 && yAxis <= 54)
                 mc.thePlayer.openGui(ICraft.instance, 1, mc.theWorld, 0, 0, 0);
             // Internet
-            if (xAxis >= 70 && xAxis <= 86 && yAxis >= 38 && yAxis <= 54) {
+            if (xAxis >= 70 && xAxis <= 86 && yAxis >= 38 && yAxis <= 54)
+            {
                 if (Loader.isModLoaded("MCEF") && !(mc.currentScreen instanceof GuiiCraftBrowser))
                 {
                     mc.displayGuiScreen(InternetHandler.hasBackup() ? InternetHandler.backup : new GuiiCraftBrowser());

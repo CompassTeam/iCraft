@@ -6,6 +6,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public abstract class TileInventory extends TileBlock implements ISidedInventory
@@ -135,10 +138,16 @@ public abstract class TileInventory extends TileBlock implements ISidedInventory
         return !isInvalid();
     }
 
-    @Override
-    public String getInventoryName()
+    //@Override
+    public String getName()
     {
         return ICraftUtils.localize(getBlockType().getUnlocalizedName() + "." + fullName + ".name");
+    }
+
+    @Override
+    public IChatComponent getDisplayName()
+    {
+        return new ChatComponentText(getName());
     }
 
     @Override
@@ -148,13 +157,13 @@ public abstract class TileInventory extends TileBlock implements ISidedInventory
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory(EntityPlayer player) {}
 
     @Override
-    public void closeInventory() {}
+    public void closeInventory(EntityPlayer player) {}
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -166,20 +175,38 @@ public abstract class TileInventory extends TileBlock implements ISidedInventory
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, int side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         return isItemValidForSlot(slotID, itemstack);
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side)
+    public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[]{};
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         return true;
     }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {}
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear() {}
 }

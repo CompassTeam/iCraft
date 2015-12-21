@@ -1,11 +1,5 @@
 package iCraft.client;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.item.ItemiCraft;
 import iCraft.core.utils.ICraftClientUtils;
@@ -13,6 +7,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +22,10 @@ public class ClientTickHandler
 {
     public static Minecraft mc = FMLClientHandler.instance().getClient();
     private boolean hasNotified = false;
-    public static PositionedSoundRecord phoneRing = PositionedSoundRecord.func_147674_a(new ResourceLocation("iCraft:ringPhone"), 1.0F);
+    public static PositionedSoundRecord phoneRing = PositionedSoundRecord.create(new ResourceLocation("iCraft:ringPhone"), 1.0F);
 
     @SubscribeEvent
-    public void onTick(ClientTickEvent event)
+    public void onTick(TickEvent.ClientTickEvent event)
     {
         if (event.phase == Phase.START)
             tickStart();
@@ -45,8 +45,8 @@ public class ClientTickHandler
             {
                 if (itemStack != null && itemStack.getItem() instanceof ItemiCraft)
                 {
-                    if (itemStack.stackTagCompound != null) {
-                        if (itemStack.stackTagCompound.hasKey("called") && itemStack.stackTagCompound.getInteger("called") == 1 && itemStack.stackTagCompound.hasKey("isCalling") && !itemStack.stackTagCompound.getBoolean("isCalling"))
+                    if (itemStack.getTagCompound() != null) {
+                        if (itemStack.getTagCompound().hasKey("called") && itemStack.getTagCompound().getInteger("called") == 1 && itemStack.getTagCompound().hasKey("isCalling") && !itemStack.getTagCompound().getBoolean("isCalling"))
                         {
                             if (!mc.getSoundHandler().isSoundPlaying(phoneRing))
                                 mc.getSoundHandler().playSound(phoneRing);

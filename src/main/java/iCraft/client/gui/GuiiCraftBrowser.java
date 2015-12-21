@@ -4,6 +4,8 @@ import iCraft.client.InternetHandler;
 import iCraft.core.utils.ICraftClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.montoyo.mcef.api.API;
 import net.montoyo.mcef.api.IBrowser;
 import net.montoyo.mcef.api.MCEFApi;
@@ -11,6 +13,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class GuiiCraftBrowser extends GuiScreen
 {
     public IBrowser browser = null;
@@ -44,7 +47,7 @@ public class GuiiCraftBrowser extends GuiScreen
             buttonList.add(go = (new GuiButton(2, width - 40, 20, 20, 20, "Go")));
             buttonList.add(min = (new GuiButton(3, width - 20, 20, 20, 20, "_")));
 
-            url = new GuiNewTextField(fontRendererObj, 45, 26, width - 92, 20);
+            url = new GuiNewTextField(0, fontRendererObj, 45, 26, width - 92, 20);
             url.setMaxStringLength(65535);
             url.setEnableBackgroundDrawing(false);
             url.setText(ICraftClientUtils.homePage);
@@ -60,7 +63,7 @@ public class GuiiCraftBrowser extends GuiScreen
             min.xPosition = width - 20;
 
             String old = url.getText();
-            url = new GuiNewTextField(fontRendererObj, 45, 26, width - 92, 20);
+            url = new GuiNewTextField(0, fontRendererObj, 45, 26, width - 92, 20);
             url.setMaxStringLength(65535);
             url.setEnableBackgroundDrawing(false);
             url.setText(old);

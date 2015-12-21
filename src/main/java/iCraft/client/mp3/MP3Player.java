@@ -181,6 +181,14 @@ public class MP3Player implements ControllerListener
         }
     }
 
+    public void setVolume(float volume)
+    {
+        if (player == null)
+            return;
+
+        player.getGainControl().setLevel(Math.min(Math.max(volume, 0), 30.0F));
+    }
+
     public String getPosition()
     {
         return (new SimpleDateFormat("mm:ss")).format(new Date(TimeUnit.NANOSECONDS.toMillis(player.getMediaNanoseconds())));

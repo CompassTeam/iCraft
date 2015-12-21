@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
+import net.minecraft.util.EnumFacing;
 
 public class TilePackingCase extends TileInventory
 {
@@ -62,8 +63,14 @@ public class TilePackingCase extends TileInventory
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, int side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
         return false;
+    }
+
+    @Override
+    public String getCommandSenderName()
+    {
+        return getName();
     }
 }

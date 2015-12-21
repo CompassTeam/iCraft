@@ -4,6 +4,8 @@ import iCraft.core.entity.EntityPizzaDelivery;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -36,7 +38,7 @@ public class EntityAIPizzaFollow extends EntityAIBase
 
         if (follow == null)
             return false;
-        else if (theEntity.worldObj.provider.dimensionId != follow.worldObj.provider.dimensionId)
+        else if (theEntity.worldObj.provider.getDimensionId() != follow.worldObj.provider.getDimensionId())
             return false;
         else if (theEntity.getDistanceSqToEntity(follow) < (minDist * minDist))
             return false;
@@ -52,15 +54,15 @@ public class EntityAIPizzaFollow extends EntityAIBase
     @Override
     public boolean continueExecuting()
     {
-        return !thePathfinder.noPath() && !theEntity.getAngry() && player.worldObj.provider.dimensionId == theEntity.worldObj.provider.dimensionId;
+        return !thePathfinder.noPath() && !theEntity.getAngry() && player.worldObj.provider.getDimensionId() == theEntity.worldObj.provider.getDimensionId();
     }
 
     @Override
     public void startExecuting()
     {
         ticker = 0;
-        avoidWater = theEntity.getNavigator().getAvoidsWater();
-        theEntity.getNavigator().setAvoidsWater(false);
+        avoidWater = ((PathNavigateGround)theEntity.getNavigator()).getAvoidsWater();
+        ((PathNavigateGround)theEntity.getNavigator()).setAvoidsWater(false);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class EntityAIPizzaFollow extends EntityAIBase
     {
         player = null;
         thePathfinder.clearPathEntity();
-        theEntity.getNavigator().setAvoidsWater(avoidWater);
+        ((PathNavigateGround)theEntity.getNavigator()).setAvoidsWater(avoidWater);
     }
 
     @Override
@@ -86,13 +88,13 @@ public class EntityAIPizzaFollow extends EntityAIBase
                 {
                     int x = MathHelper.floor_double(player.posX) - 2;
                     int y = MathHelper.floor_double(player.posZ) - 2;
-                    int z = MathHelper.floor_double(player.boundingBox.minY);
+                    int z = MathHelper.floor_double(player.getEntityBoundingBox().minY);
 
                     for (int l = 0; l <= 4; ++l)
                     {
                         for (int i1 = 0; i1 <= 4; ++i1)
                         {
-                            if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && theWorld.doesBlockHaveSolidTopSurface(theWorld, x + l, z - 1, y + i1) && !theWorld.getBlock(x + l, z, y + i1).isNormalCube() && !theWorld.getBlock(x + l, z + 1, y + i1).isNormalCube())
+                            if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(theWorld, new BlockPos(x + l, z - 1, y + i1)) && !theWorld.getBlockState(new BlockPos(x + l, z, y + i1)).getBlock().isNormalCube() && !theWorld.getBlockState(new BlockPos(x + l, z + 1, y + i1)).getBlock().isNormalCube())
                             {
                                 thePathfinder.clearPathEntity();
                                 theEntity.setPosition(player.posX, player.posY, player.posZ);

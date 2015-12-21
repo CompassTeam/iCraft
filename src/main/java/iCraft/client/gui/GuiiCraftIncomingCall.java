@@ -1,7 +1,5 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import iCraft.core.ICraft;
 import iCraft.core.network.MessageReceivedCall;
 import iCraft.core.network.NetworkHandler;
@@ -9,6 +7,10 @@ import iCraft.core.utils.ICraftClientUtils;
 import iCraft.core.utils.ICraftClientUtils.ResourceType;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
 public class GuiiCraftIncomingCall extends GuiiCraftBase
@@ -33,13 +35,13 @@ public class GuiiCraftIncomingCall extends GuiiCraftBase
         if (isCalling())
         {
             if (ICraftClientUtils.getClientPlayer(mc.theWorld, true) != null)
-                GuiInventory.func_147046_a(88, 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, true));
+                GuiInventory.drawEntityOnScreen(88, 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, true));
             drawResizedString("Calling to " + ICraftClientUtils.getPlayerNumber(true), 118, 218, 0xffffff, 0.5F);
         }
         else
         {
             if (ICraftClientUtils.getClientPlayer(mc.theWorld, false) != null)
-                GuiInventory.func_147046_a(88, 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, false));
+                GuiInventory.drawEntityOnScreen(88, 101, 26, 0.0F, 20.0F, ICraftClientUtils.getClientPlayer(mc.theWorld, false));
             drawResizedString(ICraftClientUtils.getPlayerNumber(false) + " is calling you", 118, 218, 0xffffff, 0.5F);
         }
         drawTime();
@@ -48,7 +50,7 @@ public class GuiiCraftIncomingCall extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
 
@@ -98,6 +100,6 @@ public class GuiiCraftIncomingCall extends GuiiCraftBase
     {
         ItemStack itemStack = mc.thePlayer.getCurrentEquippedItem();
 
-        return (itemStack != null && itemStack.stackTagCompound != null && itemStack.stackTagCompound.hasKey("isCalling") && itemStack.stackTagCompound.getBoolean("isCalling"));
+        return (itemStack != null && itemStack.getTagCompound() != null && itemStack.getTagCompound().hasKey("isCalling") && itemStack.getTagCompound().getBoolean("isCalling"));
     }
 }

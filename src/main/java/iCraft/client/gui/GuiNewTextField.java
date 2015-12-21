@@ -1,10 +1,10 @@
 package iCraft.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -20,9 +20,9 @@ public class GuiNewTextField extends GuiTextField
     private int enabledColor;
     private int disabledColor;
 
-    public GuiNewTextField(FontRenderer fontRenderer, int startX, int startY, int sizeX, int sizeY)
+    public GuiNewTextField(int componentId, FontRenderer fontRenderer, int startX, int startY, int sizeX, int sizeY)
     {
-        super(fontRenderer, startX, startY, sizeX, sizeY);
+        super(componentId, fontRenderer, startX, startY, sizeX, sizeY);
         fontRendererObj = fontRenderer;
     }
 

@@ -13,6 +13,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -25,8 +26,8 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
         super(world);
 
         setSize(0.6F, 1.8F);
-        getNavigator().setBreakDoors(true);
-        getNavigator().setAvoidsWater(true);
+        ((PathNavigateGround)getNavigator()).setBreakDoors(true);
+        ((PathNavigateGround)getNavigator()).setAvoidsWater(true);
         tasks.addTask(0, new EntityAISwimming(this));
         tasks.addTask(1, new EntityAIMoveIndoors(this));
         tasks.addTask(2, new EntityAIRestrictOpenDoor(this));
@@ -35,6 +36,9 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
         tasks.addTask(5, new EntityAIPizzaFollow(this, 1.0F, 4.0F));
         tasks.addTask(5, new EntityAIDelivery(this, 4.0F));
         tasks.addTask(5, new EntityAIAttackCrazy(this, 1.0D));
+
+        setAlwaysRenderNameTag(true);
+        setNoAI(false);
     }
 
     public EntityPizzaDelivery(World world, double x, double y, double z)
@@ -53,17 +57,11 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
     {
         super.entityInit();
 
-        dataWatcher.addObject(14, new String(""));
-        dataWatcher.addObject(15, new Integer(0));
-        dataWatcher.addObject(16, new Integer(1200));
-        dataWatcher.addObject(17, new Byte((byte) 0));
-        dataWatcher.addObject(18, new Byte((byte) 0));
-    }
-
-    @Override
-    protected boolean isAIEnabled()
-    {
-        return true;
+        dataWatcher.addObject(16, new String(""));
+        dataWatcher.addObject(17, new Integer(1));
+        dataWatcher.addObject(18, new Integer(300));
+        dataWatcher.addObject(19, new Byte((byte) 0));
+        dataWatcher.addObject(20, new Byte((byte) 0));
     }
 
     @Override
@@ -100,7 +98,7 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
     }
 
     @Override
-    protected void dropRareDrop(int i)
+    protected void addRandomDrop()
     {
         dropItem(ICraft.pizza, 1);
     }
@@ -118,7 +116,7 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
     public void readEntityFromNBT(NBTTagCompound nbtTags)
     {
         super.readEntityFromNBT(nbtTags);
-        setPlayer(nbtTags.getString("name"));
+        setPlayer(nbtTags.getString("playerId"));
         setQuantity(nbtTags.getInteger("quantity"));
         setPatience(nbtTags.getInteger("patience"));
         setTrade(nbtTags.getBoolean("trade"));
@@ -141,7 +139,7 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
     public void writeEntityToNBT(NBTTagCompound nbtTags)
     {
         super.writeEntityToNBT(nbtTags);
-        nbtTags.setString("name", getPlayer());
+        nbtTags.setString("playerId", getPlayer());
         nbtTags.setInteger("quantity", getQuantity());
         nbtTags.setInteger("patience", getPatience());
         nbtTags.setBoolean("trade", getTrade());
@@ -165,52 +163,52 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
 
     public String getPlayer()
     {
-        return dataWatcher.getWatchableObjectString(14);
+        return dataWatcher.getWatchableObjectString(16);
     }
 
-    public void setPlayer(String name)
+    public void setPlayer(String player)
     {
-        dataWatcher.updateObject(14, name);
+        dataWatcher.updateObject(16, player);
     }
 
     public int getQuantity()
     {
-        return dataWatcher.getWatchableObjectInt(15);
+        return dataWatcher.getWatchableObjectInt(17);
     }
 
     public void setQuantity(int newQuantity)
     {
-        dataWatcher.updateObject(15, newQuantity);
+        dataWatcher.updateObject(17, newQuantity);
     }
 
     public int getPatience()
     {
-        return dataWatcher.getWatchableObjectInt(16);
+        return dataWatcher.getWatchableObjectInt(18);
     }
 
     public void setPatience(int i)
     {
-        dataWatcher.updateObject(16, i);
+        dataWatcher.updateObject(18, i);
     }
 
     public boolean getTrade()
     {
-        return dataWatcher.getWatchableObjectByte(17) == 1;
+        return dataWatcher.getWatchableObjectByte(19) == 1;
     }
 
     public void setTrade(boolean status)
     {
-        dataWatcher.updateObject(17, status ? (byte) 1 : (byte) 0);
+        dataWatcher.updateObject(19, status ? (byte) 1 : (byte) 0);
     }
 
     public boolean getAngry()
     {
-        return dataWatcher.getWatchableObjectByte(18) == 1;
+        return dataWatcher.getWatchableObjectByte(20) == 1;
     }
 
     public void setAngry(boolean angry)
     {
-        dataWatcher.updateObject(18, angry ? (byte) 1 : (byte) 0);
+        dataWatcher.updateObject(20, angry ? (byte) 1 : (byte) 0);
     }
 
     @Override
@@ -294,14 +292,10 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
             resetSlotContents();
     }
 
-    @Override
-    public String getInventoryName()
-    {
-        return "Pizza Delivey";
-    }
+    // TODO - getName()
 
     @Override
-    public boolean hasCustomInventoryName()
+    public boolean hasCustomName()
     {
         return true;
     }
@@ -334,14 +328,38 @@ public class EntityPizzaDelivery extends EntityCreature implements IInventory
     }
 
     @Override
-    public void openInventory() {}
+    public void openInventory(EntityPlayer player) {}
 
     @Override
-    public void closeInventory() {}
+    public void closeInventory(EntityPlayer player) {}
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
     {
         return true;
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {}
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear() {}
+
+    @Override
+    public String getCommandSenderName()
+    {
+        return "Pizza Deliverer";
     }
 }

@@ -7,11 +7,15 @@ import iCraft.core.utils.ICraftUtils;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class GuiiCraftBlacklist extends GuiiCraftBase
 {
     private float scroll;
@@ -30,10 +34,10 @@ public class GuiiCraftBlacklist extends GuiiCraftBase
     public void initGui()
     {
         super.initGui();
-        textField = new GuiTextField(fontRendererObj, guiWidth + 52, guiHeight + 54, 72, 10);
+        textField = new GuiTextField(0, fontRendererObj, guiWidth + 52, guiHeight + 54, 72, 10);
         textField.setMaxStringLength(16);
         textField.setFocused(false);
-        list = (mc.thePlayer.getCurrentEquippedItem().stackTagCompound != null ? readNBT(mc.thePlayer.getCurrentEquippedItem().stackTagCompound) : list);
+        list = (mc.thePlayer.getCurrentEquippedItem().getTagCompound() != null ? readNBT(mc.thePlayer.getCurrentEquippedItem().getTagCompound()) : list);
         canScroll = list.size() > 5;
     }
 
@@ -42,7 +46,7 @@ public class GuiiCraftBlacklist extends GuiiCraftBase
     {
         super.updateScreen();
         textField.updateCursorCounter();
-        list = (mc.thePlayer.getCurrentEquippedItem().stackTagCompound != null ? readNBT(mc.thePlayer.getCurrentEquippedItem().stackTagCompound) : list);
+        list = (mc.thePlayer.getCurrentEquippedItem().getTagCompound() != null ? readNBT(mc.thePlayer.getCurrentEquippedItem().getTagCompound()) : list);
         canScroll = list.size() > 5;
     }
 
@@ -103,7 +107,7 @@ public class GuiiCraftBlacklist extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseClicked(int x, int y, int button)
+    protected void mouseClicked(int x, int y, int button) throws IOException
     {
         super.mouseClicked(x, y, button);
         textField.mouseClicked(x, y, button);
@@ -150,9 +154,9 @@ public class GuiiCraftBlacklist extends GuiiCraftBase
     }
 
     @Override
-    protected void mouseMovedOrUp(int x, int y, int type)
+    protected void mouseReleased(int x, int y, int type)
     {
-        super.mouseMovedOrUp(x, y, type);
+        super.mouseReleased(x, y, type);
 
         if (type == 0 && isDragging)
         {
@@ -162,7 +166,7 @@ public class GuiiCraftBlacklist extends GuiiCraftBase
     }
 
     @Override
-    public void handleMouseInput()
+    public void handleMouseInput()  throws IOException
     {
         super.handleMouseInput();
 
@@ -179,7 +183,7 @@ public class GuiiCraftBlacklist extends GuiiCraftBase
     }
 
     @Override
-    protected void keyTyped(char ch, int keyCode)
+    protected void keyTyped(char ch, int keyCode) throws IOException
     {
         textField.textboxKeyTyped(ch, keyCode);
         if (textField.isFocused() && keyCode != 1)

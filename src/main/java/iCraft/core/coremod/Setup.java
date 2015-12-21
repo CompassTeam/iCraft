@@ -1,6 +1,7 @@
 package iCraft.core.coremod;
 
-import cpw.mods.fml.relauncher.IFMLCallHook;
+import net.minecraftforge.fml.relauncher.FMLInjectionData;
+import net.minecraftforge.fml.relauncher.IFMLCallHook;
 
 import java.io.File;
 import java.util.Map;
@@ -12,7 +13,7 @@ public class Setup implements IFMLCallHook
     @Override
     public Void call() throws Exception
     {
-        Library.init(this.mcDir, (String) cpw.mods.fml.relauncher.FMLInjectionData.data()[4]);
+        Library.init(this.mcDir, (String) FMLInjectionData.data()[4]);
 
         return null;
     }

@@ -1,11 +1,11 @@
 package iCraft.core.network;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +48,7 @@ public class MessageBlacklist extends MessageBase<MessageBlacklist>
     @Override
     public void handleServerSide(MessageBlacklist message, EntityPlayer player)
     {
-        NBTTagCompound nbtTags = player.getCurrentEquippedItem().stackTagCompound;
+        NBTTagCompound nbtTags = player.getCurrentEquippedItem().getTagCompound();
         switch (message.status)
         {
             case 0:

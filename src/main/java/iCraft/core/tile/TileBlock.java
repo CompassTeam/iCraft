@@ -21,8 +21,8 @@ public abstract class TileBlock extends TileBase
         facing = buf.readInt();
         if (clientFacing != facing)
         {
-            worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord));
+            worldObj.markBlockRangeForRenderUpdate(getPos().getX(), getPos().getY(), getPos().getZ(), getPos().getX(), getPos().getY(), getPos().getZ());
+            worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
             clientFacing = facing;
         }
     }
@@ -55,7 +55,7 @@ public abstract class TileBlock extends TileBase
 
         if (facing != clientFacing || !worldObj.isRemote)
         {
-            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, worldObj.getBlock(xCoord, yCoord, zCoord));
+            worldObj.notifyNeighborsOfStateChange(getPos(), getBlockType());
             clientFacing = facing;
         }
     }

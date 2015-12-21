@@ -1,15 +1,5 @@
 package iCraft.core;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import iCraft.client.mp3.MP3Player;
 import iCraft.client.voice.VoiceClient;
 import iCraft.core.block.BlockPackingCase;
@@ -27,6 +17,16 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -98,9 +98,9 @@ public class ICraft
     public void addBlocks()
     {
         // Declarations
-        caseBlock = new BlockPackingCase().setBlockName("CaseBlock");
+        caseBlock = new BlockPackingCase().setUnlocalizedName("caseBlock");
         // Registrations
-        GameRegistry.registerBlock(caseBlock, "CaseBlock");
+        GameRegistry.registerBlock(caseBlock, "caseBlock");
     }
 
     public void addRecipes()
@@ -142,8 +142,8 @@ public class ICraft
         // Set the mod's configuration
         configuration = new Configuration(config);
 
-        if (!mp3Folder.exists())
-            mp3Folder.mkdirs();
+        // Creates the mp3 folder
+        mp3Folder.mkdirs();
 
         FMLCommonHandler.instance().bus().register(new ICraftEventHandler());
 
@@ -157,7 +157,6 @@ public class ICraft
         FMLCommonHandler.instance().bus().register(new CommonPlayerTracker());
 
         proxy.registerUtilities();
-        proxy.registerRenders();
 
         // NETworking
         NetworkHandler.init();
@@ -181,6 +180,8 @@ public class ICraft
 
         if (Loader.isModLoaded("MCEF"))
             proxy.registerNetHandler();
+
+        proxy.registerRenders();
 
         logger.info("Prismatic core online.");
     }

@@ -1,6 +1,5 @@
 package iCraft.core.network;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
 import iCraft.core.entity.EntityPackingCase;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -8,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class MessageCraftBay extends MessageBase<MessageCraftBay>
 {
